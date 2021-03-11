@@ -4,7 +4,7 @@
 	"description": "Tinder-like app",
 	"main": "app.js",
 	"scripts": {
-		"start": "node app.js",
+		"start": "node ./src/app.js",
 		"dev": "git pull && nodemon app.js"
 	},
 	"author": "kchikech",
@@ -17,6 +17,7 @@
 		"ejs": "^2.6.1",
 		"express": "^4.17.1",
 		"googleapis": "^42.0.0",
+		"htmlspecialchars": "^1.0.5",
 		"jsonwebtoken": "^8.5.1",
 		"moment": "^2.24.0",
 		"multer": "^1.4.1",

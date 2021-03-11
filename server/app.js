@@ -1,0 +1,12 @@
+require('dotenv').config()
+const bodyParser = require('body-parser')
+const express = require('express')
+const cors = require('cors')
+const path = require('path')
+const http = require('http')
+const socketIo = require('socket.io')
+const port = process.env.PORT || 3000
+const app = express()
+const passport = require('passport')
+const pool = require('./helpers/database')
+const ejs = require('ejs')

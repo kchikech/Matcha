@@ -36,6 +36,48 @@ const getVkey = (vkey, callback) => {
 	})
 }
 
+// Add Reset password  key  [rkey] ---- Using Email 
+
+const addRkey = (user, callback) => {
+	let request = `UPDATE users SET rkey = '${user.rkey}' where email = '${user.email}'`
+	db.query(request, (error, results) => {
+		if (error) throw error
+		callback(results)
+	})
+}
+
+// Destroy password  key  [rkey] ---- Using Email 
+
+const destroyRkey = (id, callback) => {
+	let request = `UPDATE users SET rkey = '' where id = '${id}'`
+	db.query(request, (error, results) => {
+		if (error) throw error
+		callback(results)
+	})
+}
+
+// Update password [After forgotten Email]
+
+const changeFrogottenPassword = (user, callback) => {
+	let request = `UPDATE users SET password = '${user.password}', rkey = '' WHERE id = '${user.id}' AND rkey = '${user.rkey}'`
+	db.query(request, (error, results) => {
+		if (error) throw error
+		callback(results)
+	})
+}
+
+
+// Check Reset password  key  [rkey]
+
+const getRkey = (rkey, callback) => {
+	let request = `SELECT id FROM users WHERE rkey = '${rkey}'`
+	db.query(request, (error, results) => {
+		if (error) throw error
+		callback(results)
+	})
+}
+
+
 // Validate an Email 
 
 const validateEmail = (vkey, callback) => {
@@ -66,11 +108,16 @@ const getUserByUsername = (username, callback) => {
 	})
 }
 
+
 module.exports = {
 	addUser,
 	getUser,
 	getVkey,
 	validateEmail,
 	getUserById,
-	getUserByUsername
+	getUserByUsername,
+	getRkey,
+	addRkey,
+	destroyRkey,
+	changeFrogottenPassword
 }

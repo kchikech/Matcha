@@ -3,12 +3,11 @@ const jwt = require('jsonwebtoken')
 const { promisify } = require('util')
 const sign = promisify(jwt.sign)
 // const auth = require('../middleware/auth')
-const sendMail = require('../utility/mail')
 const validator = require('../utility/validator')
 const htmlspecialchars = require('htmlspecialchars')
 const userModel = require('../models/userModel')
 const { randomBytes } = require('crypto')
-const { use } = require('../routes/userRoutes')
+const { AsyncResource } = require('async_hooks')
 const randomHex = () => randomBytes(10).toString('hex')
 
 const tokenExp = { expiresIn: 7200 }
@@ -53,7 +52,35 @@ const login = async (req, res) => {
 
 // Logout 
 
+const logout = (req, res) => {
+	if (!req.user.id)
+		return res.json({ msg: 'Not logged in' })
+	res.json({ ok: true })
+}
+
+// isLoggedIn 
+
+const isLoggedIn = (req, res) => {
+	if (!req.user.id)
+		return res.json({ msg: 'Not logged in' })
+	try {
+		userModel.getUserById(req.user.id, async (result) => {
+			if (!result.length)
+				return res.json({ msg: 'Not logged in' })
+			const user = result[0]
+			delete user.password
+			delete user.verified
+			console.log(user.tokenExpiration)
+
+			delete user.tokenExpiration
+		})
+	} catch (err) {
+
+	}
+}
 
 module.exports = {
-	login
+	login,
+	logout,
+	isLoggedIn
 }

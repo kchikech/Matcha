@@ -108,6 +108,31 @@ const getUserByUsername = (username, callback) => {
 	})
 }
 
+// Filling information for the 1st time 
+
+const updateProfile = (user, callback) => {
+	let request = ` UPDATE users SET 
+									first_name = ?,
+									last_name = ?,
+									username = ?,
+									email = ?,
+									gender = ?,
+									looking = ?,
+									birthdate = ?,
+									biography = ?, 
+									tags = ?,
+									\`address\` = ?,
+									city = ?,
+									country = ?,
+									postal_code = ?,
+									phone = ?
+									WHERE id = ?,
+	`
+	db.query(request, Object.values(user), (error, results) => {
+		if (error) throw error
+		callback(results)
+	})
+}
 
 module.exports = {
 	addUser,
@@ -119,5 +144,6 @@ module.exports = {
 	getRkey,
 	addRkey,
 	destroyRkey,
-	changeFrogottenPassword
+	changeFrogottenPassword,
+	updateProfile
 }

@@ -9,7 +9,6 @@ const htmlspecialchars = require('htmlspecialchars')
 const userModel = require('../models/userModel')
 const { randomBytes } = require('crypto')
 const { AsyncResource } = require('async_hooks')
-const { user } = require('../config/db')
 
 const randomHex = () => randomBytes(10).toString('hex')
 const tokenExp = { expiresIn: 7200 }

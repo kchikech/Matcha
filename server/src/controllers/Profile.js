@@ -60,7 +60,7 @@ const updateProfile = async (req, res) => {
 					country: req.body.country,
 					postal_code: req.body.postal_code,
 					phone: req.body.phone,
-					id = req.user.id
+					id: req.user.id
 				}
 				await userModel.updateProfile(user, async (results) => {
 					if (results.affectedRows) {

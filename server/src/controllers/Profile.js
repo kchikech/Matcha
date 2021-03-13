@@ -63,7 +63,7 @@ const updateProfile = async (req, res) => {
 					id = req.user.id
 				}
 				await userModel.updateProfile(user, async (results) => {
-					if (result.affectedRows) {
+					if (results.affectedRows) {
 						res.json({ ok: true, status: 'User Updated' })
 					}
 					await tagsModel.getTags((result) => {

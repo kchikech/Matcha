@@ -89,6 +89,40 @@ const updateProfile = async (req, res) => {
 	}
 }
 
+
+// Change Email 
+
+const changeEmail = async (req, res) => {
+	if (!req.user.id)
+		return res.json({ msg: 'Not logged in' })
+	if (!validator(req.body.email, 'email'))
+		return res.json({ msg: 'Email is invalid' })
+	if (!validator(req.body.password, 'password'))
+		return res.json({ msg: 'Password is invalid' })
+	if (req.user.email == req.body.email)
+		return res.json({ msg: 'The provided email matches your current email' })
+	try {
+		// let hash = await bcrypt.compare(req.body.password, req.user.password)
+		// if (!hash)
+		res.json({ msg: req.user.email })
+		// await userModel.getUserByemail(req.body.email, async (result) => {
+		// 	if (result.length)
+		// 		return res.json({ msg: 'Email already exists' })
+		// 	let user = {
+		// 		id: req.user.id,
+		// 		email: req.body.email
+		// 	}
+		// 	await userModel.changeEmail(user, (result) => {
+		// 		if (!result.affectedRows)
+		// 			return res.json({ msg: 'Oups something went wrong' })
+		// 		res.json({ ok: true })
+		// 	})
+		// })
+	} catch (err) {
+		return res.json({ msg: 'Fatal error', err })
+	}
+}
 module.exports = {
-	updateProfile
+	updateProfile,
+	changeEmail
 }

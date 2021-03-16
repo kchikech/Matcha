@@ -26,6 +26,17 @@ const getUser = (user, callback) => {
 	})
 }
 
+// Get user by Username / email 
+
+const getUserByemail = (email, callback) => {
+	let request = `SELECT email, username FROM users WHERE email = '${email}'`
+	db.query(request, (error, results) => {
+		if (error) throw error
+		callback(results)
+	})
+}
+
+
 // Check Verif key 
 
 const getVkey = (vkey, callback) => {
@@ -91,10 +102,11 @@ const validateEmail = (vkey, callback) => {
 // Get user data by ID
 
 const getUserById = (id, callback) => {
-	let request = `SELECT * from users WHERE id='${id}'`
-	db.query(request, (error, results) => {
+	let request = `SELECT * from users WHERE id= ? `
+	db.query(request, [id], (error, results) => {
 		if (error) throw error
 		callback(results)
+		return results
 	})
 }
 
@@ -126,11 +138,21 @@ const updateProfile = (user, callback) => {
 									country = ?,
 									postal_code = ?,
 									phone = ?
-									WHERE id = ?,
+									WHERE id = ?
 	`
 	db.query(request, Object.values(user), (error, results) => {
 		if (error) throw error
 		callback(results)
+	})
+}
+
+// Update user Email 
+
+const changeEmail = (user, callback) => {
+	let request = `UPDATE users SET email = ${user.email} WHERE id = ${user.id}`
+	db.query(request, (error, result) => {
+		if (error) throw error
+		callback(result)
 	})
 }
 
@@ -141,9 +163,11 @@ module.exports = {
 	validateEmail,
 	getUserById,
 	getUserByUsername,
+	getUserByemail,
 	getRkey,
 	addRkey,
 	destroyRkey,
 	changeFrogottenPassword,
-	updateProfile
+	updateProfile,
+	changeEmail
 }

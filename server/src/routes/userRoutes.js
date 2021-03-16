@@ -4,6 +4,7 @@ const register = require('../controllers/register')
 const auth = require('../controllers/auth')
 const authCheck = require('../middleware/auth')
 const forgot = require('../controllers/forget_password')
+const userProfile = require('../controllers/profile')
 // const isLoggedIn = require('../cont')
 
 
@@ -23,6 +24,10 @@ routes.post('/changefpassword', authCheck, forgot.change_password) /* Private =>
 
 // change_password
 // Private access [Needs login] 
+
+routes.post('/updateprofile', authCheck, userProfile.updateProfile)
+routes.post('/changeemail', authCheck, userProfile.changeEmail)
+
 routes.get('/logout', authCheck, auth.logout)
 
 

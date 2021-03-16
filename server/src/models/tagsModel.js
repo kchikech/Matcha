@@ -1,5 +1,4 @@
 const db = require('../utility/database')
-const { callbackPromise } = require('nodemailer/lib/shared')
 
 // GET TAGS
 
@@ -9,16 +8,15 @@ const getTags = (callback) => {
 		if (error) throw error
 		callback(results)
 	})
-} 
+}
 
 
 // INSERT TAGS 
 
-const insertTags = (tag, callback) => {
+const insertTags = (tag) => {
 	let request = `INSERT INTO tags (value) VALUES (?)`
-	db.query(request, (error, results) => {
+	db.query(request, [tag], (error) => {
 		if (error) throw error
-		callback(results)
 	})
 }
 

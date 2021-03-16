@@ -106,9 +106,14 @@ const getUserById = (id, callback) => {
 	db.query(request, [id], (error, results) => {
 		if (error) throw error
 		callback(results)
-		return results
 	})
 }
+
+const getUserByIdD = (id) => {
+	let request = `SELECT * from users WHERE id= ? `
+	return db.query(request, [id])
+}
+
 
 // Get user data by Username 
 
@@ -149,7 +154,17 @@ const updateProfile = (user, callback) => {
 // Update user Email 
 
 const changeEmail = (user, callback) => {
-	let request = `UPDATE users SET email = ${user.email} WHERE id = ${user.id}`
+	let request = `UPDATE users SET email = '${user.email}' WHERE id = '${user.id}'`
+	db.query(request, (error, result) => {
+		if (error) throw error
+		callback(result)
+	})
+}
+
+// Update Password 
+
+const changePassword = (user, callback) => {
+	let request = `UPDATE users SET password = '${user.password}' WHERE id = '${user.id}'`
 	db.query(request, (error, result) => {
 		if (error) throw error
 		callback(result)
@@ -169,5 +184,7 @@ module.exports = {
 	destroyRkey,
 	changeFrogottenPassword,
 	updateProfile,
-	changeEmail
+	changeEmail,
+	getUserByIdD,
+	changePassword
 }

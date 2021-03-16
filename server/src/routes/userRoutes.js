@@ -27,6 +27,8 @@ routes.post('/changefpassword', authCheck, forgot.change_password) /* Private =>
 
 routes.post('/updateprofile', authCheck, userProfile.updateProfile)
 routes.post('/changeemail', authCheck, userProfile.changeEmail)
+routes.post('/changepassword', authCheck, userProfile.changePassword)
+
 
 routes.get('/logout', authCheck, auth.logout)
 

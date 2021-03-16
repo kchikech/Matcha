@@ -102,27 +102,60 @@ const changeEmail = async (req, res) => {
 	if (req.user.email == req.body.email)
 		return res.json({ msg: 'The provided email matches your current email' })
 	try {
-		// let hash = await bcrypt.compare(req.body.password, req.user.password)
-		// if (!hash)
-		res.json({ msg: req.user.email })
-		// await userModel.getUserByemail(req.body.email, async (result) => {
-		// 	if (result.length)
-		// 		return res.json({ msg: 'Email already exists' })
-		// 	let user = {
-		// 		id: req.user.id,
-		// 		email: req.body.email
-		// 	}
-		// 	await userModel.changeEmail(user, (result) => {
-		// 		if (!result.affectedRows)
-		// 			return res.json({ msg: 'Oups something went wrong' })
-		// 		res.json({ ok: true })
-		// 	})
-		// })
+		let hash = await bcrypt.compare(req.body.password, req.user.password)
+		if (!hash)
+			res.json({ msg: 'Wrong password' })
+		await userModel.getUserByemail(req.body.email, async (result) => {
+			if (result.length)
+				return res.json({ msg: 'Email already exists' })
+			let user = {
+				id: req.user.id,
+				email: req.body.email
+			}
+			await userModel.changeEmail(user, (result) => {
+				if (!result.affectedRows)
+					return res.json({ msg: 'Oups something went wrong' })
+				res.json({ ok: true })
+			})
+		})
 	} catch (err) {
 		return res.json({ msg: 'Fatal error', err })
 	}
 }
+
+// Change password ~ 
+
+const changePassword = async (req, res) => {
+	if (!req.user.id) return res.json({ msg: 'Not logged in' })
+	if (!validator(req.body.password, 'password'))
+		return res.json({ msg: 'Password is invalid' })
+	if (!validator(req.body.newPassword, 'password'))
+		return res.json({ msg: 'New password is invalid' })
+	if (!req.body.confNewPassword || req.body.newPassword != req.body.confNewPassword)
+		return res.json({ msg: 'Confirmation password is invalid' })
+	if (req.body.password == req.body.newPassword)
+		return res.json({ msg: 'The provided password matches your current password' })
+	try {
+		let hash = await bcrypt.compare(req.body.password, req.user.password)
+		if (!hash) 
+			return res.json({ msg: 'Wrong password' })
+		const password = await bcrypt.hash(req.body.newPassword, 10)
+		let user = {
+			password: password,
+			id: req.user.id
+		}
+		await userModel.changePassword(user, (result) => {
+			if (!result.affectedRows)
+				return res.json({ msg: 'Oups something went wrong' })
+			res.json({ ok: true })
+		})
+	} catch (err) {
+		return res.json({ msg: 'Fatal error', err })
+	}
+}
+
 module.exports = {
 	updateProfile,
-	changeEmail
+	changeEmail,
+	changePassword
 }

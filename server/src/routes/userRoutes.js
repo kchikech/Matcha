@@ -5,6 +5,9 @@ const auth = require('../controllers/auth')
 const authCheck = require('../middleware/auth')
 const forgot = require('../controllers/forget_password')
 const userProfile = require('../controllers/profile')
+const multer = require('multer')
+const upload = multer({ limits: { fileSize: 4 * 1024 * 1024 } })
+
 // const isLoggedIn = require('../cont')
 
 
@@ -22,13 +25,16 @@ routes.post('/rkeycheck', authCheck, forgot.check_key) /* Private =>>> to check 
 routes.post('/destroykey', authCheck, forgot.destroy_key) /* Private =>>> to check for later */
 routes.post('/changefpassword', authCheck, forgot.change_password) /* Private =>>> to check for later */
 
-// change_password
 // Private access [Needs login] 
 
 routes.post('/updateprofile', authCheck, userProfile.updateProfile)
 routes.post('/changeemail', authCheck, userProfile.changeEmail)
 routes.post('/changepassword', authCheck, userProfile.changePassword)
 
+// upload images 
+
+routes.post('/image', [authCheck, upload.single('image')], userProfile.uploadImages)
+routes.post('/image/cover', [authCheck, upload.single('image')], userProfile.uploadCover)
 
 routes.get('/logout', authCheck, auth.logout)
 

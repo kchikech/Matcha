@@ -106,9 +106,14 @@ const getUserById = (id, callback) => {
 	db.query(request, [id], (error, results) => {
 		if (error) throw error
 		callback(results)
-		return results
 	})
 }
+
+const getUserByIdD = (id) => {
+	let request = `SELECT * from users WHERE id= ? `
+	return db.query(request, [id])
+}
+
 
 // Get user data by Username 
 
@@ -149,10 +154,98 @@ const updateProfile = (user, callback) => {
 // Update user Email 
 
 const changeEmail = (user, callback) => {
-	let request = `UPDATE users SET email = ${user.email} WHERE id = ${user.id}`
+	let request = `UPDATE users SET email = '${user.email}' WHERE id = '${user.id}'`
 	db.query(request, (error, result) => {
 		if (error) throw error
 		callback(result)
+	})
+}
+
+// Update Password 
+
+const changePassword = (user, callback) => {
+	let request = `UPDATE users SET password = '${user.password}' WHERE id = '${user.id}'`
+	db.query(request, (error, result) => {
+		if (error) throw error
+		callback(result)
+	})
+}
+
+// Get images 
+
+const getImages = (id, callback) => {
+	let request = `SELECT * FROM images WHERE user_id = ${id} AND cover = 0`
+	db.query(request, (error, results) => {
+		if (error) throw error
+		callback(results)
+	})
+}
+
+// Get image By Id
+
+const getImagesById = (id, user_id, callback) => {
+	let request = `SELECT * FROM images WHERE id = ${id} AND user_id = ${user_id} `
+	db.query(request, (error, results) => {
+		if (error) throw error
+		callback(results)
+	})
+}
+
+
+// Add images 
+
+const insertImages = (user, callback) => {
+	let request = `INSERT INTO images (user_id, name, profile) VALUES (${user.id}, '${user.imgName}', 1)`
+	db.query(request, (error, results) => {
+		if (error) throw error
+		callback(results)
+	})
+}
+
+// Update profile pic to 0
+
+const updateProfilePic = (id) => {
+	let request = `UPDATE images SET profile = 0 WHERE user_id = ${id}`
+	db.query(request, (error) => {
+		if (error) throw error
+	})
+}
+
+// Get cover photo
+
+const getCover = (id, callback) => {
+	let request = `SELECT * FROM images WHERE cover = 1 AND user_id = ${id}`
+	db.query(request, (error, results) => {
+		if (error) throw error
+		callback(results)
+	})
+}
+
+// Delete cover photo 
+
+const delCover = (id, user_id) => {
+	let request = `DELETE FROM images WHERE id = ${id} AND user_id = ${user_id}`
+	db.query(request, (error) => {
+		if (error) throw error
+	})
+}
+
+// INSERT Cover photo
+
+const insertCover = (user_id, imgName, callback) => {
+	let request = `INSERT INTO images (user_id, name, cover) VALUES (${user_id}, '${imgName}', 1)`
+	db.query(request, (error, results) => {
+		if (error) throw error
+		callback(results)
+	})
+}
+
+// DELETE images 
+
+const delImage = (id, user_id, callback) => {
+	let request = `DELETE FROM images WHERE id = ${id} AND user_id = ${user_id}`
+	db.query(request, (error) => {
+		if (error) throw error
 	})
 }
 
@@ -169,5 +262,14 @@ module.exports = {
 	destroyRkey,
 	changeFrogottenPassword,
 	updateProfile,
-	changeEmail
+	changeEmail,
+	getUserByIdD,
+	changePassword,
+	insertImages,
+	getImages,
+	updateProfilePic,
+	getCover,
+	delCover,
+	insertCover,
+	getImagesById
 }

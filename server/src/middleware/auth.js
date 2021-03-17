@@ -1,28 +1,23 @@
 const jwt = require('jsonwebtoken')
-const pool = require('../utility/database')
 const userModel = require('../models/userModel')
 
-const auth = async (req, res, callback) => {
+const auth = async (req, res, next) => {
 	const token = req.header('x-auth-token')
-	if (!token) return res.json({ msg: 'No token, authorizaton denied' })
-	let user = {}
-
+	if (!token)
+		return res.json({ msg: 'No token, authorizaton denied' })
 	try {
 		const decoded = jwt.verify(token, process.env.SECRET)
 		req.user = decoded
-		let user = {}
 		if (decoded.id) {
+			let user = {}
 			try {
-				userModel.getUserById(decoded.id, (user) => {
-					if (user.length)
-						console.log( user[0])
-				})
+				user = await userModel.getUserByIdD(decoded.id)
 			} catch (err) {
 				console.log('Got error here -->', err)
 			}
+			req.user = user[0]
 		}
-		console.log(user)
-		callback()
+		next()
 	} catch (e) {
 		res.json({ msg: 'Token is not valid' })
 	}

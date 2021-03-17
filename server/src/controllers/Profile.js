@@ -10,8 +10,15 @@ const userModel = require('../models/userModel')
 const tagsModel = require('../models/tagsModel')
 const { randomBytes } = require('crypto')
 const { AsyncResource } = require('async_hooks')
+const { dirname, resolve } = require('path')
+
+const { readFile, writeFile, unlink } = require('fs')
+const { user } = require('../config/db')
+const writeFileAsync = promisify(writeFile)
+const unlinkAsync = promisify(unlink)
 
 const randomHex = () => randomBytes(10).toString('hex')
+const isExternal = url => url && (url.indexOf(':') > -1 || url.indexOf('//') > -1 || url.indexOf('www.') > -1)
 const tokenExp = { expiresIn: 7200 }
 
 // Update user profile 
@@ -102,27 +109,132 @@ const changeEmail = async (req, res) => {
 	if (req.user.email == req.body.email)
 		return res.json({ msg: 'The provided email matches your current email' })
 	try {
-		// let hash = await bcrypt.compare(req.body.password, req.user.password)
-		// if (!hash)
-		res.json({ msg: req.user.email })
-		// await userModel.getUserByemail(req.body.email, async (result) => {
-		// 	if (result.length)
-		// 		return res.json({ msg: 'Email already exists' })
-		// 	let user = {
-		// 		id: req.user.id,
-		// 		email: req.body.email
-		// 	}
-		// 	await userModel.changeEmail(user, (result) => {
-		// 		if (!result.affectedRows)
-		// 			return res.json({ msg: 'Oups something went wrong' })
-		// 		res.json({ ok: true })
-		// 	})
-		// })
+		let hash = await bcrypt.compare(req.body.password, req.user.password)
+		if (!hash)
+			res.json({ msg: 'Wrong password' })
+		await userModel.getUserByemail(req.body.email, async (result) => {
+			if (result.length)
+				return res.json({ msg: 'Email already exists' })
+			let user = {
+				id: req.user.id,
+				email: req.body.email
+			}
+			await userModel.changeEmail(user, (result) => {
+				if (!result.affectedRows)
+					return res.json({ msg: 'Oups something went wrong' })
+				res.json({ ok: true })
+			})
+		})
 	} catch (err) {
 		return res.json({ msg: 'Fatal error', err })
 	}
 }
+
+// Change password ~ 
+
+const changePassword = async (req, res) => {
+	if (!req.user.id) return res.json({ msg: 'Not logged in' })
+	if (!validator(req.body.password, 'password'))
+		return res.json({ msg: 'Password is invalid' })
+	if (!validator(req.body.newPassword, 'password'))
+		return res.json({ msg: 'New password is invalid' })
+	if (!req.body.confNewPassword || req.body.newPassword != req.body.confNewPassword)
+		return res.json({ msg: 'Confirmation password is invalid' })
+	if (req.body.password == req.body.newPassword)
+		return res.json({ msg: 'The provided password matches your current password' })
+	try {
+		let hash = await bcrypt.compare(req.body.password, req.user.password)
+		if (!hash)
+			return res.json({ msg: 'Wrong password' })
+		const password = await bcrypt.hash(req.body.newPassword, 10)
+		let user = {
+			password: password,
+			id: req.user.id
+		}
+		await userModel.changePassword(user, (result) => {
+			if (!result.affectedRows)
+				return res.json({ msg: 'Oups something went wrong' })
+			res.json({ ok: true })
+		})
+	} catch (err) {
+		return res.json({ msg: 'Fatal error', err })
+	}
+}
+
+// Upload images 
+
+const uploadImages = async (req, res) => {
+	if (!req.user.id)
+		return res.json({ msg: 'Not logged in' })
+	try {
+		const base64Data = req.body.image.replace(/^data:image\/\w+;base64,/, '')
+		const uploadDir = `${dirname(dirname(__dirname))}/public/uploads/`
+		const imgName = `${req.user.id}-${randomHex()}.png`
+
+		userModel.getImages(req.user.id, async (result) => {
+			if (result.length < 5) {
+				await writeFileAsync(uploadDir + imgName, base64Data, 'base64')
+				await userModel.updateProfilePic(req.user.id)
+				let user = {
+					id: req.user.id,
+					imgName: imgName
+				}
+				userModel.insertImages(user, (result) => {
+					res.json({ ok: true, status: 'Image Updated', name: imgName, id: result.insertId, user_id: req.user.id })
+				})
+			} else {
+				res.json({ msg: 'User already has 5 photos' })
+			}
+		})
+	} catch (err) {
+		console.log(err)
+		return res.json({ msg: 'Fatal error', err })
+	}
+}
+
+// Upload cover 
+
+const uploadCover = async (req, res) => {
+	if (!req.user.id)
+		return res.json({ msg: 'Not logged in' })
+	try {
+		await userModel.getCover(req.user.id, async (result) => {
+			if (result.length) {
+				if (!isExternal(result[0].name)) {
+					try {
+						unlinkAsync(resolve(dirname(dirname(__dirname)), 'public/uploads', result[0].name))
+					} catch (err) {
+						return res.json({ msg: 'Fatal error', err })
+					}
+				}
+				await userModel.delCover(result[0].id, req.user.id)
+			}
+			const uploadDir = `${dirname(dirname(__dirname))}/public/uploads/`
+			const imgName = `${req.user.id}-${randomHex()}.png`
+			await writeFileAsync(uploadDir + imgName, req.file.buffer, 'base64')
+			await userModel.insertCover(req.user.id, imgName, (result) => {
+				if (!result.affectedRows)
+					return res.json({ msg: 'Oups.. Something went wrong!' })
+				res.json({ ok: true, status: 'Image Updated', name: imgName, id: result.insertId, user_id: req.user.id })
+			})
+		})
+	} catch (err) {
+		return res.json({ msg: 'Fatal error', err })
+	}
+}
+
+// DELETE IMAGES
+
+// const deleteImage  = async (req, res) => {
+// 	if (!req.user.id) 
+// 		return res.json({ msg: 'Not logged in' })
+
+// }
+
 module.exports = {
 	updateProfile,
-	changeEmail
+	changeEmail,
+	changePassword,
+	uploadImages,
+	uploadCover
 }

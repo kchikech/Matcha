@@ -37,6 +37,8 @@ routes.post('/image', [authCheck, upload.single('image')], userProfile.uploadIma
 routes.post('/image/cover', [authCheck, upload.single('image')], userProfile.uploadCover)
 
 routes.get('/logout', authCheck, auth.logout)
+routes.get('/isLoggedin', authCheck, auth.isLoggedIn)
+
 
 
 module.exports = routes

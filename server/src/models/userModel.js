@@ -1,4 +1,6 @@
 const db = require('../utility/database')
+const { calendar } = require('googleapis/build/src/apis/calendar')
+const { callbackPromise } = require('nodemailer/lib/shared')
 
 // add user
 
@@ -244,6 +246,16 @@ const insertCover = (user_id, imgName, callback) => {
 
 const delImage = (id, user_id, callback) => {
 	let request = `DELETE FROM images WHERE id = ${id} AND user_id = ${user_id}`
+	db.query(request, (error, result) => {
+		if (error) throw error
+		callback(result)
+	})
+}
+
+// Set profile pic To 1 and Cover to 0
+
+const setImages = (user_id, callback) => {
+	let request = `UPDATE images SET profile = 1 WHERE user_id = ${user_id} AND cover = 0 ORDER BY created_at DESC LIMIT 1`
 	db.query(request, (error) => {
 		if (error) throw error
 	})
@@ -271,5 +283,7 @@ module.exports = {
 	getCover,
 	delCover,
 	insertCover,
-	getImagesById
+	getImagesById,
+	delImage,
+	setImages
 }

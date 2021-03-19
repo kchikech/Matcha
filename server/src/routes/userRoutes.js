@@ -5,6 +5,8 @@ const auth = require('../controllers/auth')
 const authCheck = require('../middleware/auth')
 const forgot = require('../controllers/forget_password')
 const userProfile = require('../controllers/profile')
+const browsing = require('../controllers/browsing')
+
 const multer = require('multer')
 const upload = multer({ limits: { fileSize: 4 * 1024 * 1024 } })
 
@@ -36,6 +38,16 @@ routes.post('/changepassword', authCheck, userProfile.changePassword)
 routes.post('/image', [authCheck, upload.single('image')], userProfile.uploadImages)
 routes.post('/image/cover', [authCheck, upload.single('image')], userProfile.uploadCover)
 routes.post('/image/del', authCheck, userProfile.deleteImage)
+
+routes.post('/show', authCheck, browsing.showUsers)
+routes.get('/show/:id', authCheck, browsing.showUserById)
+
+routes.get('/gethistory', authCheck, browsing.getHistory)
+routes.get('/gettags', authCheck, browsing.getTags)
+
+
+routes.get('/getblocked', authCheck, browsing.getBlocked)
+routes.get('/getmatches', authCheck, browsing.getMatches)
 
 
 routes.get('/logout', authCheck, auth.logout)

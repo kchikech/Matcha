@@ -15,7 +15,7 @@ const match = async (req, res) => {
 		const users = [req.user.id, req.body.id]
 		if (req.body.liked) {
 			await matchModel.delMatche(users)
-			await chatModel.allowConv(users)
+			await chatModel.disallowConv(users)
 			await notifModel.insertNotif('unlike', users)
 			res.json({ ok: true })
 		} else {

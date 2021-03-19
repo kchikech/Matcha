@@ -60,7 +60,7 @@ const logout = (req, res) => {
 
 // isLoggedIn 
 
-const isLoggedIn = (req, res) => {
+const isLoggedIn = async (req, res) => {
 	if (!req.user.id)
 		return res.json({ msg: 'Not logged in' })
 	try {
@@ -70,12 +70,14 @@ const isLoggedIn = (req, res) => {
 			const user = result[0]
 			delete user.password
 			delete user.verified
-			console.log(user.tokenExpiration)
-
 			delete user.tokenExpiration
+			user.images = await userModel.getImagesByUid(user.id)
+			const payload = { id: user.id }
+			user.token = await sign(payload, process.env.SECRET, tokenExp)
+			res.json(user)
 		})
 	} catch (err) {
-
+		return res.json({ msg: 'Fatal error', err })
 	}
 }
 

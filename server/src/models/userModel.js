@@ -194,6 +194,14 @@ const getImagesById = (id, user_id, callback) => {
 }
 
 
+// Get image by userid
+
+const getImagesByUid = (user_id) => {
+	let request = `SELECT * FROM images WHERE user_id = ?`
+	return db.query(request, [user_id])
+}
+
+
 // Add images 
 
 const insertImages = (user, callback) => {
@@ -254,13 +262,12 @@ const delImage = (id, user_id, callback) => {
 
 // Set profile pic To 1 and Cover to 0
 
-const setImages = (user_id, callback) => {
+const setImages = (user_id) => {
 	let request = `UPDATE images SET profile = 1 WHERE user_id = ${user_id} AND cover = 0 ORDER BY created_at DESC LIMIT 1`
 	db.query(request, (error) => {
 		if (error) throw error
 	})
 }
-
 module.exports = {
 	addUser,
 	getUser,
@@ -285,5 +292,6 @@ module.exports = {
 	insertCover,
 	getImagesById,
 	delImage,
-	setImages
+	setImages,
+	getImagesByUid
 }

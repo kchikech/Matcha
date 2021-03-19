@@ -292,6 +292,13 @@ const getBlocked = (user_id) => {
 	return db.query(request, [user_id, user_id])
 }
 
+//  Block user 
+
+const blockUser = (users) => {
+	let request = `INSERT INTO blocked (blocker, blocked) VALUES (?, ?)`
+	return db.query(request, users)
+}
+
 module.exports = {
 	addUser,
 	getUser,
@@ -320,5 +327,6 @@ module.exports = {
 	getImagesByUid,
 	getUserBrow,
 	getUserbyIdBrow,
-	getBlocked
+	getBlocked,
+	blockUser
 }

@@ -20,7 +20,7 @@ const insertConv = (users) => {
 
 // Set Conv Allowed 
 
-const allowConv = (users) => {
+const disallowConv = (users) => {
 	let request = `UPDATE conversations SET allowed = 0
 	WHERE id_user1 = ? AND id_user2 = ?
 	OR id_user2 = ? AND id_user1 = ?`
@@ -29,15 +29,26 @@ const allowConv = (users) => {
 
 // Set Conv unallowed 
 
-const disallowConv = (conv_id) => {
+const allowConv = (conv_id) => {
 	let request = `UPDATE conversations SET allowed = 1 WHERE id_conversation = ?`
 	return db.query(request, [conv_id])
 }
 
 
+// DELETE conv 
+
+const delConv = (id1, id2) => {
+	let request = `DELETE FROM chat WHERE id_conversation IN (
+					SELECT id_conversation FROM conversations
+						WHERE (id_user1 = ? AND id_user2 = ?)
+						OR (id_user1 = ? AND id_user2 = ?))`
+	return db.query(request, [id1, id2, id1, id2])
+}
+
 module.exports = {
 	getConv,
 	insertConv,
 	allowConv,
-	disallowConv
+	disallowConv,
+	delConv
 }

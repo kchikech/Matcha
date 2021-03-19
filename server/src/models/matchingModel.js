@@ -50,7 +50,7 @@ const insertMatche = (users) => {
 // Delete matche 
 
 const delMatche = (users) => {
-	let request = `DELETE FROM matches where matcher = ? AND matched = ?`
+	let request = `DELETE FROM matches where (matcher = ? AND matched = ?) OR (matcher = ? AND matched = ?)`
 	return db.query(request, users)
 }
 

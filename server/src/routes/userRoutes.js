@@ -35,6 +35,8 @@ routes.post('/changepassword', authCheck, userProfile.changePassword)
 
 routes.post('/image', [authCheck, upload.single('image')], userProfile.uploadImages)
 routes.post('/image/cover', [authCheck, upload.single('image')], userProfile.uploadCover)
+routes.post('/image/del', authCheck, userProfile.deleteImage)
+
 
 routes.get('/logout', authCheck, auth.logout)
 routes.get('/isLoggedin', authCheck, auth.isLoggedIn)

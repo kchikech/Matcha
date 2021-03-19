@@ -225,16 +225,44 @@ const uploadCover = async (req, res) => {
 
 // DELETE IMAGES
 
-// const deleteImage  = async (req, res) => {
-// 	if (!req.user.id) 
-// 		return res.json({ msg: 'Not logged in' })
-
-// }
+const deleteImage = async (req, res) => {
+	if (!req.user.id)
+		return res.json({ msg: 'Not logged in' })
+	if (!req.body.id || isNaN(req.body.id))
+		return res.json({ msg: 'Invalid request' })
+	try {
+		await userModel.getImagesById(req.body.id, req.user.id, async (result) => {
+			if (result.length) {
+				if (!isExternal(result[0].name)) {
+					try {
+						await unlinkAsync(resolve(dirname(dirname(__dirname)), 'public/uploads', result[0].name))
+					} catch (err) {
+						return res.json({ msg: 'Fatal error', err })
+					}
+				}
+				await userModel.delImage(req.body.id, req.user.id, async (result) => {
+					if (req.body.profile)
+						await userModel.setImages(req.user.id)
+					if (result.affectedRows)
+						return res.json({ ok: true })
+				})
+			}
+			else {
+				console.log(req.body.id)
+				console.log(req.user.id)
+				res.json({ msg: 'Oups something went wrong' })
+			}
+		})
+	} catch (err) {
+		return res.json({ msg: 'Fatal error', err })
+	}
+}
 
 module.exports = {
 	updateProfile,
 	changeEmail,
 	changePassword,
 	uploadImages,
-	uploadCover
+	uploadCover,
+	deleteImage
 }

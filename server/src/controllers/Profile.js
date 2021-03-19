@@ -1,11 +1,7 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { promisify } = require('util')
-const sign = promisify(jwt.sign)
-const auth = require('../middleware/auth')
-const mailer = require('../utility/mail')
 const validator = require('../utility/validator')
-const htmlspecialchars = require('htmlspecialchars')
 const userModel = require('../models/userModel')
 const tagsModel = require('../models/tagsModel')
 const { randomBytes } = require('crypto')
@@ -13,7 +9,6 @@ const { AsyncResource } = require('async_hooks')
 const { dirname, resolve } = require('path')
 
 const { readFile, writeFile, unlink } = require('fs')
-const { user } = require('../config/db')
 const writeFileAsync = promisify(writeFile)
 const unlinkAsync = promisify(unlink)
 
@@ -258,11 +253,12 @@ const deleteImage = async (req, res) => {
 	}
 }
 
+
 module.exports = {
 	updateProfile,
 	changeEmail,
 	changePassword,
 	uploadImages,
 	uploadCover,
-	deleteImage
+	deleteImage,
 }

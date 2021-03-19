@@ -1,6 +1,4 @@
 const db = require('../utility/database')
-const { calendar } = require('googleapis/build/src/apis/calendar')
-const { callbackPromise } = require('nodemailer/lib/shared')
 
 // add user
 
@@ -38,6 +36,23 @@ const getUserByemail = (email, callback) => {
 	})
 }
 
+// GET USERS FOR Browsing 
+
+const getUserBrow = () => {
+	let request = `SELECT *, GET_RATING(users.id) AS rating FROM users, images
+									WHERE users.id = images.user_id
+									AND images.profile = 1 ORDER BY rating DESC`
+	return db.query(request)
+}
+
+// GET User by id (browsing)
+
+const getUserbyIdBrow = (id, user_id) => {
+	let request = `SELECT *, GET_RATING(users.id) AS rating FROM users WHERE id = ?
+	AND id NOT IN (SELECT blocked FROM blocked WHERE blocker = ?)
+	AND ? NOT IN (SELECT blocked FROM blocked WHERE blocker = ?)`
+	return db.query(request, [id, user_id, user_id, id])
+}
 
 // Check Verif key 
 
@@ -268,6 +283,15 @@ const setImages = (user_id) => {
 		if (error) throw error
 	})
 }
+
+
+// get Blocked  users 
+
+const getBlocked = (user_id) => {
+	let request = `SELECT * FROM blocked where blocker = ? OR blocked = ?`
+	return db.query(request, [user_id, user_id])
+}
+
 module.exports = {
 	addUser,
 	getUser,
@@ -293,5 +317,8 @@ module.exports = {
 	getImagesById,
 	delImage,
 	setImages,
-	getImagesByUid
+	getImagesByUid,
+	getUserBrow,
+	getUserbyIdBrow,
+	getBlocked
 }

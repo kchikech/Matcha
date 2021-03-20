@@ -42,7 +42,7 @@ const delConv = (id1, id2) => {
 					SELECT id_conversation FROM conversations
 						WHERE (id_user1 = ? AND id_user2 = ?)
 						OR (id_user1 = ? AND id_user2 = ?))`
-	return db.query(request, [id1, id2, id1, id2])
+	return db.query(request, [id1, id2, id2, id1])
 }
 
 module.exports = {

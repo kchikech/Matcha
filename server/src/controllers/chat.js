@@ -90,5 +90,6 @@ const sendMsg = async (req, res) => {
 module.exports = {
 	getConAll,
 	getMessages,
-
+	updateConv,
+	sendMsg
 }

@@ -2,7 +2,7 @@ const userModel = require('../models/userModel')
 
 // Update user location 
 
-const updatePosition = (req, res) => {
+const updatePosition = async (req, res) => {
 	if (!req.user.id)
 		return res.json({ msg: 'not logged in' })
 	if (!req.body.lat || !req.body.lng || isNaN(req.body.lat) || isNaN(req.body.lng))

@@ -6,13 +6,15 @@ const { resolve, dirname } = require('path')
 const { promisify } = require('util')
 const readFileAsync = promisify(readFile)
 const { google } = require("googleapis")
+
 const oauth2Client = new google.auth.OAuth2(
 	'784133489779-1j47dr41lp46mt67qc0n5pse8gakr5an.apps.googleusercontent.com',
 	'NauIJwmREBYk01uMAjlXuEec',
 	'https://developers.google.com/oauthplayground'
 )
-oauth2Client.setCredentials({ refresh_token: '1//04t2XkCLXrfHkCgYIARAAGAQSNwF-L9Irrbs93m6j15q9jIXubVJi45GS17tVwSVNYDGUldGgJSJWoqEs9U9-Ax1Nk6jiK_Alvew' })
-const accessToken = '1//04OQ-pDrCYNm3CgYIARAAGAQSNwF-L9Irh4vpnUbf7XUpNmYzxc2jNt8g40De84VdWadYL9cjq1npBspdHabYjcCJH7K4iathE6E'
+oauth2Client.setCredentials({ refresh_token: '1//04qK2G281ZXGWCgYIARAAGAQSNwF-L9IrEpDg-KzdWP7FpXvCmSOuxuLngpiu4eOX_OMNGQ0AZtmSe2a0ra44QGdQd1uhRn54gqQ' })
+const accessToken = oauth2Client.getAccessToken()
+
 // 784133489779-1j47dr41lp46mt67qc0n5pse8gakr5an.apps.googleusercontent.com
 // NauIJwmREBYk01uMAjlXuEec
 const sendMail = async (to, key, type) => {
@@ -33,7 +35,7 @@ const sendMail = async (to, key, type) => {
 				user: process.env.MAIL_USER,
 				clientId: '784133489779-1j47dr41lp46mt67qc0n5pse8gakr5an.apps.googleusercontent.com',
 				clientSecret: 'NauIJwmREBYk01uMAjlXuEec',
-				refreshToken: '1//04OQ-pDrCYNm3CgYIARAAGAQSNwF-L9Irh4vpnUbf7XUpNmYzxc2jNt8g40De84VdWadYL9cjq1npBspdHabYjcCJH7K4iathE6E',
+				refreshToken: '1//04qK2G281ZXGWCgYIARAAGAQSNwF-L9IrEpDg-KzdWP7FpXvCmSOuxuLngpiu4eOX_OMNGQ0AZtmSe2a0ra44QGdQd1uhRn54gqQ',
 				accessToken: accessToken
 			}
 		})

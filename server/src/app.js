@@ -23,7 +23,15 @@ app.use(bodyParser.json({ limit: '50mb', extended: true }))
 app.set('views', path.join(__dirname, '/views'));
 app.set('view engine', 'ejs')
 
+// routes 
+
 app.use('/api/users/', require('./routes/userRoutes'))
+app.use('/api/auth/', require('./routes/authRoutes'))
+app.use('/api/browse/', require('./routes/browsingRoutes'))
+app.use('/api/chat/', require('./routes/chatRoutes'))
+app.use('/api/notif/', require('./routes/notifRoutes'))
+app.use('/api/matching/', require('./routes/matchingRoutes'))
+
 
 const server = http.createServer(app)
 

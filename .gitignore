@@ -1,9 +1,9 @@
 .DS_Store
-
+ApexSQL/
 client/node_modules
 server/node_modules
 node_modules
-
+server/public
 .idea
 .vscode
 *.suo

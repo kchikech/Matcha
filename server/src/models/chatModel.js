@@ -155,4 +155,5 @@ module.exports = {
 	getConversation,
 	insertMsg,
 	updateConv
+	delConv
 }

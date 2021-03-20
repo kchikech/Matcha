@@ -69,7 +69,7 @@ export default {
   async created () {
     try {
       const token = localStorage.getItem('token')
-      const url = `${process.env.URL}/auth/isloggedin`
+      const url = `http://localhost:3000/auth/isloggedin`
       const headers = { 'x-auth-token': token }
       const res = await this.$http.get(url, { headers })
       if (!res.body.msg) this.$router.push('/')

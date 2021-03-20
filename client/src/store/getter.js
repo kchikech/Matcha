@@ -1,18 +1,18 @@
-//  import utility from '../utility'
+import utility from '../utility'
 /* eslint-disable */ 
 export const getters = {
-	user: state => state.user
-	// tags: state => state.tags.filter(cur => cur.length),
+	user: state => state.user,
+	tags: state => state.tags.filter(cur => cur.length),
 	// notif: state => state.notif,
 	// typing: state => state.typing,
 	// online: state => state.online,
-	// status: state => state.status,
+	status: state => state.status,
 	// blocked: state => state.blocked,
-	// location: state => state.location,
+	location: state => state.location,
 	// typingSec: state => state.typingSec,
 	// seenConvo: state => state.seenConvo,
 	// blockedBy: state => state.blockedBy,
-	// blacklist: state => state.blacklist,
+	blacklist: state => state.blacklist,
 	// followers: state => state.followers,
 	// newMessage: state => state.newMessage,
 	// selectedConvo: state => state.selectedConvo,
@@ -56,15 +56,15 @@ export const getters = {
 	// 			return true
 	// 	return false
 	// }),
-	// profileImage: state => {
-	// 	if (!state.user.images) return 'default.png'
-	// 	const image = state.user.images.find(cur => cur.profile)
-	// 	return utility.getFullPath(image ? image.name : 'default.png')
-	// },
-	// coverPhoto: state => {
-	// 	const cover = 'https://images.pexels.com/photos/96422/pexels-photo-96422.jpeg'
-	// 	if (!state.user.images) return cover
-	// 	const image = state.user.images.find(cur => cur.cover)
-	// 	return utility.getFullPath(image ? image.name : cover)
-	// }
+	profileImage: state => {
+		if (!state.user.images) return 'default.png'
+		const image = state.user.images.find(cur => cur.profile)
+		return utility.getFullPath(image ? image.name : 'default.png')
+	},
+	coverPhoto: state => {
+		const cover = 'https://images.pexels.com/photos/96422/pexels-photo-96422.jpeg'
+		if (!state.user.images) return cover
+		const image = state.user.images.find(cur => cur.cover)
+		return utility.getFullPath(image ? image.name : cover)
+	}
 }

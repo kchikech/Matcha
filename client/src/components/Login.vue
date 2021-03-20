@@ -61,7 +61,7 @@ export default {
   async created () {
     try {
       const token = localStorage.getItem('token')
-      const url = `${process.env.URL}/auth/isloggedin`
+      const url = `${process.env.URL}/api/users/isloggedin`
       const headers = { 'x-auth-token': token }
       const res = await this.$http.get(url, { headers })
       if (!res.body.msg) this.$router.push('/')
@@ -74,7 +74,7 @@ export default {
     ...mapActions(['login']),
     async log () {
       try {
-        const url = `${process.env.URL}/auth/login`
+        const url = `${process.env.URL}/api/users/login`
         const auth = {
           username: this.username,
           password: this.password
@@ -85,9 +85,9 @@ export default {
         } else {
           const user = res.body
           if (user.id) {
-            // if (user.birthdate) {
-            //   user.birthdate = new Date(user.birthdate).toISOString().substr(0, 10)
-            // }
+            if (user.birthdate) {
+              user.birthdate = new Date(user.birthdate).toISOString().substr(0, 10)
+            }
             this.login(user)
             // this.updateLocation()
             this.$router.push('/')

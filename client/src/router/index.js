@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import VueRessource from 'vue-resource'
 import Router from 'vue-router'
-import Users from '../components/users'
+import Users from '../components/Users'
 import Register from '../components/Register'
 import Login from '../components/Login'
 import Forgot from '../components/Forgot'
 import Recover from '../components/Recover'
+import Settings from '../components/Settings'
 
 Vue.use(Router)
 Vue.use(VueRessource)
@@ -38,6 +39,11 @@ export default new Router({
       path: '/recover',
       name: '',
       component: Recover
+    },
+    {
+      path: '/settings',
+      name: '',
+      component: Settings
     }
   ]
 })

@@ -69,7 +69,7 @@ export default {
   async created () {
     try {
       const token = localStorage.getItem('token')
-      const url = `http://localhost:3000/auth/isloggedin`
+      const url = `${process.env.URL}/api/users/isLoggedin`
       const headers = { 'x-auth-token': token }
       const res = await this.$http.get(url, { headers })
       if (!res.body.msg) this.$router.push('/')
@@ -82,7 +82,7 @@ export default {
     async registerUser (e) {
       e.preventDefault()
       try {
-        const url = `http://localhost:3000/api/users/add`
+        const url = `${process.env.URL}/api/users/add`
         const data = {
           first_name: this.firstname,
           last_name: this.lastname,

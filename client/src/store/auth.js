@@ -9,26 +9,26 @@ export const auth = {
       //   (new Vue()).$socket.emit('auth', state.user.id)
       //   state.isConnected = true
       // }
+    },
+    logout: state => {
+      state.status = false
+      state.user = {}
+      state.isConnected = false
+      state.typing = false
+      state.blocked = []
+      state.location = {}
+      state.seenConvo = false
+      state.convos = []
+      state.notif = []
+      state.blockedBy = []
+      state.followers = []
+      state.following = []
+      state.newMessage = null
+      state.selectedConvo = null
+      state.visited = []
+      state.visitor = []
+      state.imageConvo = null
     }
-    // logout: state => {
-    //   state.status = false
-    //   state.user = {}
-    //   state.isConnected = false
-    //   state.typing = false
-    //   state.blocked = []
-    //   state.location = {}
-    //   state.seenConvo = false
-    //   state.convos = []
-    //   state.notif = []
-    //   state.blockedBy = []
-    //   state.followers = []
-    //   state.following = []
-    //   state.newMessage = null
-    //   state.selectedConvo = null
-    //   state.visited = []
-    //   state.visitor = []
-    //   state.imageConvo = null
-    // }
   },
   actions: {
     login: ({ commit, dispatch }, user) => {
@@ -42,7 +42,7 @@ export const auth = {
         // dispatch('syncHistory')
         // dispatch('syncMatches')
         // dispatch('syncConvoAll')
-        // dispatch('syncBlocked', user.id)
+        dispatch('syncBlocked', user.id)
         commit('login', user)
       }
     },

@@ -1,10 +1,5 @@
-const validator = require('../utility/validator')
-const htmlspecialchars = require('htmlspecialchars')
 const userModel = require('../models/userModel')
 const tagsModel = require('../models/tagsModel')
-const { randomBytes } = require('crypto')
-const { AsyncResource } = require('async_hooks')
-const { dirname, resolve } = require('path')
 
 const notifModel = require('../models/notificationsModel')
 const historyModel = require('../models/historyModel')
@@ -126,7 +121,8 @@ const getHistory = async (req, res) => {
 // Get tags 
 
 const getTags = async (req, res) => {
-	if (!req.user.id) res.json({ msg: 'not logged in' })
+	if (!req.user.id) 
+		res.json({ msg: 'not logged in' })
 	try {
 		await tagsModel.getTags((result) => {
 			res.json(result.map(cur => cur.value))

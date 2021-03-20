@@ -287,9 +287,9 @@ const setImages = (user_id) => {
 
 // get Blocked  users 
 
-const getBlocked = (user_id) => {
+const getBlocked = (users) => {
 	let request = `SELECT * FROM blocked where blocker = ? OR blocked = ?`
-	return db.query(request, [user_id, user_id])
+	return db.query(request, users)
 }
 
 //  Block user 
@@ -297,6 +297,27 @@ const getBlocked = (user_id) => {
 const blockUser = (users) => {
 	let request = `INSERT INTO blocked (blocker, blocked) VALUES (?, ?)`
 	return db.query(request, users)
+}
+
+// Unblock user 
+
+const unblockUser = (id, user_id) => {
+	let request = `DELETE FROM blocked WHERE blocker = ? AND blocked = ?`
+	return db.query(request, [user_id, id])
+}
+
+// Report User 
+
+const reportUser = (id) => {
+	let request = `UPDATE users SET reports = reports + 1 WHERE id = ?`
+	return db.query(request, [id])
+}
+
+// User update location 
+
+const updateLocation = (lat, long, id) => {
+	let request = `UPDATE users SET lat = ?, lng = ? WHERE id = ?`
+	return db.query(request, [let, long, id])
 }
 
 module.exports = {
@@ -328,5 +349,8 @@ module.exports = {
 	getUserBrow,
 	getUserbyIdBrow,
 	getBlocked,
-	blockUser
+	blockUser,
+	unblockUser,
+	reportUser,
+	updateLocation
 }

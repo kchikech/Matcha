@@ -320,6 +320,10 @@ const updateLocation = (lat, long, id) => {
 	return db.query(request, [let, long, id])
 }
 
+const blacklist = (placehoder) => {
+	let request = `SELECT id, username, first_name, last_name FROM users WHERE id IN ${placehoder}`
+	return db.query(request)
+}
 module.exports = {
 	addUser,
 	getUser,
@@ -352,5 +356,6 @@ module.exports = {
 	blockUser,
 	unblockUser,
 	reportUser,
-	updateLocation
+	updateLocation,
+	blacklist
 }

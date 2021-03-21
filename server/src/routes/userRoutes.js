@@ -28,7 +28,8 @@ routes.get('/show/:id', authCheck, browsing.showUserById)
 routes.post('/report', authCheck, block.reportUser)
 routes.post('/block', authCheck, block.blockUser)
 routes.post('/unblock', authCheck, block.unblockUser)
-routes.get('/blocked', authCheck, browsing.getBlocked)
+routes.get('/getblocked', authCheck, browsing.getBlocked)
+routes.get('/blacklister', authCheck, userProfile.blacklisted)
 
 routes.post('/location', authCheck, location)
 

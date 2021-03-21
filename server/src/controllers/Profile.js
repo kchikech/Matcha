@@ -70,15 +70,17 @@ const updateProfile = async (req, res) => {
 					}
 					await tagsModel.getTags((result) => {
 						const tags = result.map(cur => cur.value)
-						user.tags.split(',').forEach(async element => {
-							if (!tags.includes(element)) {
-								try {
-									await tagsModel.insertTags([element])
-								} catch (err) {
-									return res.json({ msg: 'Fatal error', err })
+						if (user.tags) {
+							user.tags.split(',').forEach(async element => {
+								if (!tags.includes(element)) {
+									try {
+										await tagsModel.insertTags([element])
+									} catch (err) {
+										return res.json({ msg: 'Fatal error', err })
+									}
 								}
-							}
-						})
+							})
+						}
 					})
 
 				})
@@ -163,7 +165,7 @@ const uploadImages = async (req, res) => {
 		return res.json({ msg: 'Not logged in' })
 	try {
 		const base64Data = req.body.image.replace(/^data:image\/\w+;base64,/, '')
-		const uploadDir = `${dirname(dirname(__dirname))}/public/uploads/`
+		const uploadDir = `${dirname(dirname(dirname(__dirname)))}/public/uploads/`
 		const imgName = `${req.user.id}-${randomHex()}.png`
 
 		userModel.getImages(req.user.id, async (result) => {
@@ -197,14 +199,14 @@ const uploadCover = async (req, res) => {
 			if (result.length) {
 				if (!isExternal(result[0].name)) {
 					try {
-						unlinkAsync(resolve(dirname(dirname(__dirname)), 'public/uploads', result[0].name))
+						unlinkAsync(resolve(dirname(dirname(__dirname)), 'uploads', result[0].name))
 					} catch (err) {
 						return res.json({ msg: 'Fatal error', err })
 					}
 				}
 				await userModel.delCover(result[0].id, req.user.id)
 			}
-			const uploadDir = `${dirname(dirname(__dirname))}/public/uploads/`
+			const uploadDir = `${dirname(dirname(__dirname))}/uploads/`
 			const imgName = `${req.user.id}-${randomHex()}.png`
 			await writeFileAsync(uploadDir + imgName, req.file.buffer, 'base64')
 			await userModel.insertCover(req.user.id, imgName, (result) => {
@@ -230,7 +232,7 @@ const deleteImage = async (req, res) => {
 			if (result.length) {
 				if (!isExternal(result[0].name)) {
 					try {
-						await unlinkAsync(resolve(dirname(dirname(__dirname)), 'public/uploads', result[0].name))
+						await unlinkAsync(resolve(dirname(dirname(__dirname)), 'uploads', result[0].name))
 					} catch (err) {
 						return res.json({ msg: 'Fatal error', err })
 					}
@@ -253,6 +255,26 @@ const deleteImage = async (req, res) => {
 	}
 }
 
+const blacklisted = async (req, res) => {
+	if (!req.user.id)
+		return res.json({ msg: 'not logged in' })
+	const blacklist = JSON.parse(req.body.ids)
+	console.log(Array.isArray(blacklist))
+	if (!Array.isArray(blacklist) || !blacklist.length)
+		return res.json({ msg: 'bad query' })
+	const placehoder = `(${blacklist.map(cur => '?').join(', ')})`
+	try {
+		const result = await userModel.blacklist(blacklist)
+		res.json({
+			ok: true,
+			list: result
+		})
+	} catch (err) {
+		return res.json({ msg: 'Fatal error', err })
+	}
+
+}
+
 
 module.exports = {
 	updateProfile,
@@ -261,4 +283,5 @@ module.exports = {
 	uploadImages,
 	uploadCover,
 	deleteImage,
+	blacklisted
 }

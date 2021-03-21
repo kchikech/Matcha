@@ -114,7 +114,7 @@ export const user = {
       try {
         let blocked = []
         let blockedBy = []
-        let res = await utility.sync('blocked')
+        let res = await utility.sync('getblocked')
         if (Array.isArray(res.body)) {
           blocked = res.body.filter(cur => cur.blocker === id).map(cur => cur.blocked)
           blockedBy = res.body.filter(cur => cur.blocked === id).map(cur => cur.blocker)

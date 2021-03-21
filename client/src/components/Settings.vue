@@ -1,11 +1,12 @@
 <template>
 <v-layout column class="settings" v-if="loaded">
-  <div class="parallax" :style="`background-image: url(${coverPhoto});`"></div>
+  <div class="parallax" :style="`background-image: url(${coverPhoto});`">
+  </div>
   <v-tooltip left>
     <template v-slot:activator="{ on }">
       <div class="cover__btn">
         <v-fab-transition>
-          <v-btn fab small outlined color="grey" v-on="on" @click.stop="pickFile"><v-icon>mdi-image</v-icon></v-btn>
+          <v-btn fab small outlined color="blue" v-on="on" @click.stop="pickFile"><v-icon>mdi-image</v-icon></v-btn>
         </v-fab-transition>
       </div>
     </template>
@@ -20,7 +21,7 @@
             <img :src="profileImage" class="avatar__img">
             <div class="avatar__btn">
               <v-fab-transition>
-                <v-btn color="red lighten-5" fab small @click.stop="openEditor"><v-icon>mdi-image</v-icon></v-btn>
+                <v-btn color="grey lighten-5" fab small @click.stop="openEditor"><v-icon>mdi-image</v-icon></v-btn>
               </v-fab-transition>
             </div>
           </v-avatar>
@@ -127,7 +128,7 @@ export default {
         const token = this.user.token || localStorage.getItem('token')
         if (token) {
           try {
-            const url = `${process.env.URL}/api/users/isloggedin`
+            const url = `${process.env.URL}/api/auth/isloggedin`
             const headers = { 'x-auth-token': token }
             const res = await this.$http.get(url, { headers })
             if (!res.body.msg) {
@@ -154,7 +155,7 @@ export default {
     async updateUser () {
       try {
         let msg
-        const url = `${process.env.URL}/api/users/update`
+        const url = `${process.env.URL}/api/users/updateprofile`
         const headers = { 'x-auth-token': this.user.token }
         const res = await this.$http.post(url, this.user, { headers })
         if (res && res.body && !res.body.msg) {

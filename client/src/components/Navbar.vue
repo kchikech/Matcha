@@ -166,7 +166,7 @@ export default {
   async created () {
     try {
       const token = localStorage.getItem('token')
-      const url = `${process.env.URL}/api/users/isloggedin`
+      const url = `${process.env.URL}/api/auth/isloggedin`
       const headers = { 'x-auth-token': token }
       const res = await this.$http.get(url, { headers })
       if (!res.body.msg) {
@@ -247,7 +247,7 @@ export default {
     // },
     async logout () {
       try {
-        const url = `${process.env.URL}/api/users/logout`
+        const url = `${process.env.URL}/api/auth/logout`
         const headers = { 'x-auth-token': this.user.token }
         const res = await this.$http.get(url, { headers })
         if (res.body.ok) this.out(this.user.id)

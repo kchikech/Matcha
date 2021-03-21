@@ -59,7 +59,7 @@ export default {
       const token = localStorage.getItem('token')
       const key = localStorage.getItem('key')
       const headers = { 'x-auth-token': token }
-      const url = `${process.env.URL}/auth/kcheck`
+      const url = `${process.env.URL}/auth/recover`
       const res = await this.$http.post(url, { key }, { headers })
       this.loading = false
       if (res.body.ok) {
@@ -82,7 +82,7 @@ export default {
         const token = localStorage.getItem('token')
         const key = localStorage.getItem('key')
         const headers = { 'x-auth-token': token }
-        const url = `${process.env.URL}/auth/rcheck`
+        const url = `${process.env.URL}/auth/rkeycheck`
         const data = { key, password: this.password }
         const res = await this.$http.post(url, data, { headers })
         this.loading = false
@@ -99,7 +99,7 @@ export default {
   },
   async beforeDestroy () {
     const headers = { 'x-auth-token': this.user.token }
-    const url = `${process.env.URL}/auth/kdestroy`
+    const url = `${process.env.URL}/auth/destroykey`
     await this.$http.get(url, { headers })
   }
 }

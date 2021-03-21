@@ -49,7 +49,7 @@ export default {
 </script>
 
 <style>
-/* .header_layout, */
+/* .header_layout,   */
 .header_content {
   height: 100%;
   width: 100%;

@@ -18,11 +18,11 @@ const getId = tab => {
 export default {
   isBlocked,
   // eslint-disable-next-line
-  getFullPath: (file) => isExternal(file) ? file : `${process.env.URL}/uploads/${ file ? file : 'default.png' }`,
+  getFullPath: (file) => isExternal(file) ? file : `${process.env.URL}/uploads/${file ? file : 'default.png'}`,
   sync: async type => {
     try {
       const token = localStorage.getItem('token')
-      const url = `${process.env.URL}/api/users/${type}`
+      const url = `${process.env.URL}/api/${type}`
       const headers = { 'x-auth-token': token }
       return await Vue.http.get(url, { headers })
     } catch (err) {

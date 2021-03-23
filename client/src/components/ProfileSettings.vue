@@ -10,22 +10,22 @@
     </v-tooltip>
   </v-layout>
   <v-layout wrap justify-center align-start class="my-4">
-    <v-flex v-if="!isGoogleUser" xs12 sm6 class="px-3 my-3">
+    <v-flex xs12 sm6 class="px-3 my-3">
       <v-layout align-center class="px-3">
         <v-text-field disabled label="Email" color="primary" v-model="user.email"></v-text-field>
         <v-icon color="primary" class="ml-3" @click="emailDialog = true">edit</v-icon>
       </v-layout>
     </v-flex>
-    <v-flex v-if="!isGoogleUser" xs12 sm6 class="px-3 my-3">
+    <v-flex xs12 sm6 class="px-3 my-3">
       <v-layout align-center class="px-3">
         <v-text-field  disabled color="primary" value="**********" label="Password" type="password"></v-text-field>
         <v-icon color="primary" class="ml-3" @click="passDialog = true">edit</v-icon>
       </v-layout>
     </v-flex>
     <v-flex xs12>
-      <v-btn outline block large color="primary" @click="openLoc">
+      <v-btn outlined block large color="primary" @click="openLoc">
         <span>Change location</span>
-        <v-icon right>location_on</v-icon>
+        <v-icon right>mdi-map-marker</v-icon>
       </v-btn>
     </v-flex>
   </v-layout>
@@ -46,7 +46,7 @@
       </v-list>
     </v-expansion-panel-content>
   </v-expansion-panel>
-  <v-dialog v-model="emailDialog" max-width="500" persistent v-if="!isGoogleUser && reRender">
+  <v-dialog v-model="emailDialog" max-width="500" persistent v-if="reRender">
     <v-card class="grey lighten-3">
       <v-container>
         <h5 class="display-1 display-2 text-xs-center text-md-left font-weight-thin pt-3 pb-3 mb-4 hidden-sm-and-down">Change email</h5>
@@ -63,7 +63,7 @@
       </v-container>
     </v-card>
   </v-dialog>
-  <v-dialog v-model="passDialog" max-width="500" persistent v-if="!isGoogleUser && reRender">
+  <v-dialog v-model="passDialog" max-width="500" persistent v-if="reRender">
     <v-card class="grey lighten-3">
       <v-container>
         <h5 class="display-1 display-2 text-xs-center text-md-left font-weight-thin pt-3 pb-3 mb-4 hidden-sm-and-down">Change password</h5>
@@ -71,7 +71,7 @@
           <v-text-field color="primary" class="mb-4" v-model="password" validate-on-blur :rules="passRules" label="Current password" required :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'" :type="showPass ? 'text' : 'password'" @click:append="showPass = !showPass"
           ></v-text-field>
           <v-text-field color="primary" class="mb-4" v-model="newPassword" validate-on-blur :rules="passRules" label="New password" required :append-icon="showNewPass ? 'mdi-eye' : 'mdi-eye-off'" :type="showNewPass ? 'text' : 'password'" @click:append="showNewPass = !showNewPass"></v-text-field>
-          <v-text-field color="primary" class="mb-4" v-model="confNewPassword" validate-on-blur label="Confirm new password" required :append-icon="showConfNewPass ? 'visibility' : 'visibility_off'" :type="showConfNewPass ? 'text' : 'password'" @click:append="showConfNewPass = !showConfNewPass" :error-messages="passwordMatch()"></v-text-field>
+          <v-text-field color="primary" class="mb-4" v-model="confNewPassword" validate-on-blur label="Confirm new password" required :append-icon="showConfNewPass ? 'mdi-eye' : 'mdi-eye-off'" :type="showConfNewPass ? 'text' : 'password'" @click:append="showConfNewPass = !showConfNewPass" :error-messages="passwordMatch()"></v-text-field>
         </v-form>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -176,9 +176,6 @@ export default {
       }
       return false
     }
-    // isGoogleUser () {
-    //   return this.user.google_id != null
-    // }
   },
   watch: {
     location: {

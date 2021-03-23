@@ -37,9 +37,9 @@ export const auth = {
         // const { lat, lng } = user
         // commit('locate', { lat, lng })
         // dispatch('locate')
-        // dispatch('getTags')
+        dispatch('getTags')
         // dispatch('getNotif')
-        // dispatch('syncHistory')
+        dispatch('syncHistory')
         // dispatch('syncMatches')
         // dispatch('syncConvoAll')
         dispatch('syncBlocked', user.id)

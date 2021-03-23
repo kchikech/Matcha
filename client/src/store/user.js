@@ -114,7 +114,7 @@ export const user = {
       try {
         let blocked = []
         let blockedBy = []
-        let res = await utility.sync('getblocked')
+        let res = await utility.sync('users/getblocked')
         if (Array.isArray(res.body)) {
           blocked = res.body.filter(cur => cur.blocker === id).map(cur => cur.blocked)
           blockedBy = res.body.filter(cur => cur.blocked === id).map(cur => cur.blocker)
@@ -136,7 +136,7 @@ export const user = {
           username: cur.username,
           profile_image: cur.profile_image
         })
-        const res = await utility.sync('history')
+        const res = await utility.sync('browse/history')
         if (Array.isArray(res.body)) {
           visitor = res.body.filter(cur => cur.visitor_id).map(merge)
           visited = res.body.filter(cur => cur.visited_id).map(merge)
@@ -148,7 +148,7 @@ export const user = {
     },
     getTags: async ({ commit }) => {
       try {
-        const tags = await utility.sync('tags')
+        const tags = await utility.sync('browse/tags')
         commit('getTags', tags.body)
       } catch (err) {
         console.log('Got error here --> ', err)

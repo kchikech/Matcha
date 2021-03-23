@@ -8,8 +8,8 @@
       </v-layout>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn flat color="primary" @click="closeEditor">Cancel</v-btn>
-        <v-btn flat color="primary" @click="saveClicked" :disabled="error">Save</v-btn>
+        <v-btn text color="primary" @click="closeEditor">Cancel</v-btn>
+        <v-btn text color="primary" @click="saveClicked" :disabled="error">Save</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

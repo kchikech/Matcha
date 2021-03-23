@@ -73,7 +73,6 @@ import ProfileGallery from './ProfileGallery'
 import ProfileHistory from './ProfileHistory'
 import { mapGetters, mapActions } from 'vuex'
 import ProfileSettings from './ProfileSettings'
-
 export default {
   name: 'Settings',
   components: {
@@ -185,7 +184,7 @@ export default {
             this.showAlert('success', msg, this)
             this.$store.commit('updateProfileImage', res.body)
           } else {
-            msg = 'Ouups something went wrong!'
+            msg = 'Something went wrong!'
             this.showAlert('red', msg, this)
           }
         } catch (err) {

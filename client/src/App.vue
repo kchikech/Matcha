@@ -12,7 +12,14 @@ import Navbar from './components/Navbar'
 
 export default {
   name: 'navbar',
-  components: { Navbar }
+  components: { Navbar },
+  created () {
+    let script = document.createElement('script')
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_KEY}`
+    script.async = true
+    script.defer = true
+    document.body.prepend(script)
+  }
 }
 </script>
 

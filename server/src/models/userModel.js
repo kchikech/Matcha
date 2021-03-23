@@ -1,4 +1,5 @@
 const db = require('../utility/database')
+const { blacklisted } = require('../controllers/Profile')
 
 // add user
 
@@ -320,9 +321,9 @@ const updateLocation = (lat, long, id) => {
 	return db.query(request, [lat, long, id])
 }
 
-const blacklist = (placehoder) => {
+const blacklist = (blacklist ,placehoder) => {
 	let request = `SELECT id, username, first_name, last_name FROM users WHERE id IN ${placehoder}`
-	return db.query(request)
+	return db.query(request, blacklist)
 }
 module.exports = {
 	addUser,

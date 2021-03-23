@@ -165,18 +165,19 @@ const uploadImages = async (req, res) => {
 		return res.json({ msg: 'Not logged in' })
 	try {
 		const base64Data = req.body.image.replace(/^data:image\/\w+;base64,/, '')
-		const uploadDir = `${dirname(dirname(dirname(__dirname)))}/public/uploads/`
+		const uploadDir = `${dirname(dirname(__dirname))}/uploads/`
 		const imgName = `${req.user.id}-${randomHex()}.png`
 
 		userModel.getImages(req.user.id, async (result) => {
 			if (result.length < 5) {
 				await writeFileAsync(uploadDir + imgName, base64Data, 'base64')
-				await userModel.updateProfilePic(req.user.id)
 				let user = {
 					id: req.user.id,
 					imgName: imgName
 				}
+				userModel.updateProfilePic(req.user.id)
 				userModel.insertImages(user, (result) => {
+					userModel.setImages(req.user.id)
 					res.json({ ok: true, status: 'Image Updated', name: imgName, id: result.insertId, user_id: req.user.id })
 				})
 			} else {
@@ -238,8 +239,10 @@ const deleteImage = async (req, res) => {
 					}
 				}
 				await userModel.delImage(req.body.id, req.user.id, async (result) => {
-					if (req.body.profile)
-						await userModel.setImages(req.user.id)
+					if (!req.body.profile)
+					{	
+						console.log(req.body.profile)
+						userModel.setImages(req.user.id)}
 					if (result.affectedRows)
 						return res.json({ ok: true })
 				})
@@ -259,12 +262,11 @@ const blacklisted = async (req, res) => {
 	if (!req.user.id)
 		return res.json({ msg: 'not logged in' })
 	const blacklist = JSON.parse(req.body.ids)
-	console.log(Array.isArray(blacklist))
 	if (!Array.isArray(blacklist) || !blacklist.length)
 		return res.json({ msg: 'bad query' })
 	const placehoder = `(${blacklist.map(cur => '?').join(', ')})`
 	try {
-		const result = await userModel.blacklist(blacklist)
+		const result = await userModel.blacklist(blacklist, placehoder)
 		res.json({
 			ok: true,
 			list: result

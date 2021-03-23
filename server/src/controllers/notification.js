@@ -27,7 +27,7 @@ const getAllNotif = async (req, res) => {
 	if (!req.user.id)
 		return res.json({ msg: 'not logged in' })
 	try {
-		let result = await notifModel.getAllNotif(req.user.id)
+		let result = await notifModel.getNotif(req.user.id)
 		result = result.filter((cur, i) => {
 			for (let index = 0; index < result.length; index++) {
 				if (i != index && result[index].id == cur.id) {

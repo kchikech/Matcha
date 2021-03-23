@@ -100,7 +100,7 @@ export const user = {
           username: cur.username,
           profile_image: cur.profile_image
         })
-        const res = await utility.sync('matches')
+        const res = await utility.sync('matching/getmatches')
         if (Array.isArray(res.body)) {
           following = res.body.filter(cur => cur.matched_id).map(merge)
           followers = res.body.filter(cur => cur.matcher_id).map(merge)

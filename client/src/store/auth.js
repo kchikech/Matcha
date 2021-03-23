@@ -1,4 +1,4 @@
-import Vue from 'vue'
+// import Vue from 'vue'
 
 export const auth = {
   mutations: {
@@ -34,22 +34,22 @@ export const auth = {
     login: ({ commit, dispatch }, user) => {
       if (user.id) {
         localStorage.setItem('token', user.token)
-        // const { lat, lng } = user
-        // commit('locate', { lat, lng })
-        // dispatch('locate')
+        const { lat, lng } = user
+        commit('locate', { lat, lng })
+        dispatch('locate')
         dispatch('getTags')
-        // dispatch('getNotif')
+        dispatch('getNotif')
         dispatch('syncHistory')
-        // dispatch('syncMatches')
-        // dispatch('syncConvoAll')
+        dispatch('syncMatches')
+        dispatch('syncConvoAll')
         dispatch('syncBlocked', user.id)
         commit('login', user)
       }
     },
     logout: ({ commit }, id) => {
       localStorage.clear()
-      commit('logout');
-      (new Vue()).$socket.emit('logout', id)
+      commit('logout')
+      // (new Vue()).$socket.emit('logout', id)
     }
   }
 }

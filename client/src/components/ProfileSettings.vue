@@ -1,14 +1,14 @@
 <template>
 <v-container>
   <h1 class="heading display-2 font-weight-thin py-3 mb-4">Parameters</h1>
-  <v-layout justify-center>
+  <!-- <v-layout justify-center>
     <v-tooltip bottom>
       <template v-slot:activator="{ on }">
         <div v-for="(color, i) in colors" :key="i" :style="`background:${color};`" class="color_picker" @click="changeTheme(color)" v-on="on"></div>
       </template>
       <span>Use theme</span>
     </v-tooltip>
-  </v-layout>
+  </v-layout> -->
   <v-layout wrap justify-center align-start class="my-4">
     <v-flex xs12 sm6 class="px-3 my-3">
       <v-layout align-center class="px-3">
@@ -29,6 +29,7 @@
       </v-btn>
     </v-flex>
   </v-layout>
+  <v-expansion-panels >
   <v-expansion-panel v-model="blacklistPanel" :disabled="closePanel" class="blacklist">
     <v-expansion-panel-content  :ripple="{ class: 'primary--text' }" expand-icon="keyboard_arrow_down">
       <template v-slot:header>
@@ -46,6 +47,7 @@
       </v-list>
     </v-expansion-panel-content>
   </v-expansion-panel>
+  </v-expansion-panels>
   <v-dialog v-model="emailDialog" max-width="500" persistent v-if="reRender">
     <v-card class="grey lighten-3">
       <v-container>
@@ -57,8 +59,8 @@
         </v-form>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn flat color="primary" @click="saveEmail" :disabled="!valid">Save</v-btn>
-          <v-btn flat color="primary" @click="closeEmail">Cancel</v-btn>
+          <v-btn text color="primary" @click="saveEmail" :disabled="!valid">Save</v-btn>
+          <v-btn text color="primary" @click="closeEmail">Cancel</v-btn>
         </v-card-actions>
       </v-container>
     </v-card>
@@ -68,15 +70,15 @@
       <v-container>
         <h5 class="display-1 display-2 text-xs-center text-md-left font-weight-thin pt-3 pb-3 mb-4 hidden-sm-and-down">Change password</h5>
         <v-form v-model="valid" class="my-4">
-          <v-text-field color="primary" class="mb-4" v-model="password" validate-on-blur :rules="passRules" label="Current password" required :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'" :type="showPass ? 'text' : 'password'" @click:append="showPass = !showPass"
+          <v-text-field color="primary" class="mb-4" v-model="password" validate-on-blur :rules="passRules" label="Current password" autocomplete="off" required :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'" :type="showPass ? 'text' : 'password'" @click:append="showPass = !showPass"
           ></v-text-field>
-          <v-text-field color="primary" class="mb-4" v-model="newPassword" validate-on-blur :rules="passRules" label="New password" required :append-icon="showNewPass ? 'mdi-eye' : 'mdi-eye-off'" :type="showNewPass ? 'text' : 'password'" @click:append="showNewPass = !showNewPass"></v-text-field>
-          <v-text-field color="primary" class="mb-4" v-model="confNewPassword" validate-on-blur label="Confirm new password" required :append-icon="showConfNewPass ? 'mdi-eye' : 'mdi-eye-off'" :type="showConfNewPass ? 'text' : 'password'" @click:append="showConfNewPass = !showConfNewPass" :error-messages="passwordMatch()"></v-text-field>
+          <v-text-field color="primary" class="mb-4" v-model="newPassword" validate-on-blur :rules="passRules" label="New password" autocomplete="off" required :append-icon="showNewPass ? 'mdi-eye' : 'mdi-eye-off'" :type="showNewPass ? 'text' : 'password'" @click:append="showNewPass = !showNewPass"></v-text-field>
+          <v-text-field color="primary" class="mb-4" v-model="confNewPassword" validate-on-blur label="Confirm new password" autocomplete="off" required :append-icon="showConfNewPass ? 'mdi-eye' : 'mdi-eye-off'" :type="showConfNewPass ? 'text' : 'password'" @click:append="showConfNewPass = !showConfNewPass" :error-messages="passwordMatch()"></v-text-field>
         </v-form>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn flat color="primary" @click="savePass" :disabled="!valid">Save</v-btn>
-          <v-btn flat color="primary" @click="closePass">Cancel</v-btn>
+          <v-btn text color="primary" @click="savePass" :disabled="!valid">Save</v-btn>
+          <v-btn text color="primary" @click="closePass">Cancel</v-btn>
         </v-card-actions>
       </v-container>
     </v-card>
@@ -85,12 +87,12 @@
     <v-card>
       <v-toolbar dark color="primary" class="map_toolbar">
         <v-btn icon dark @click="locDialog = false">
-          <v-icon>close</v-icon>
+          <v-icon>mdi-close</v-icon>
         </v-btn>
         <v-toolbar-title>Location</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
-          <v-btn dark flat @click="changeLoc">Save</v-btn>
+          <v-btn dark text @click="changeLoc">Save</v-btn>
         </v-toolbar-items>
       </v-toolbar>
       <map-location-selector :latitude="latitude" :longitude="longitude" @locationUpdated="locationUpdated"></map-location-selector>
@@ -193,7 +195,7 @@ export default {
       'updateUserEmail'
     ]),
     googleLoaded () {
-      return (typeof mapLocationSelector.gmapApi === 'object' && typeof mapLocationSelector.gmapApi.maps === 'object')
+      return (typeof window.google === 'object' && typeof window.google.maps === 'object')
     },
     openLoc () {
       this.locDialog = true
@@ -299,12 +301,12 @@ export default {
       } else {
         this.showAlert('red', result.body.msg, this)
       }
-    },
-    changeTheme (color) {
-      let root = document.documentElement
-      this.$vuetify.theme.primary = color
-      root.style.setProperty('--color-primary', color)
     }
+    // changeTheme (color) {
+    //   let root = document.documentElement
+    //   this.$vuetify.theme.primary = color
+    //   root.style.setProperty('--color-primary', color)
+    // }
   }
 }
 </script>

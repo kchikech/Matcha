@@ -7,6 +7,9 @@ import Login from '../components/Login'
 import Forgot from '../components/Forgot'
 import Recover from '../components/Recover'
 import Settings from '../components/Settings'
+import Notifications from '../components/Notifications'
+import Messenger from '../components/Messenger'
+import Search from '../components/Search'
 
 Vue.use(Router)
 Vue.use(VueRessource)
@@ -44,6 +47,21 @@ export default new Router({
       path: '/settings',
       name: '',
       component: Settings
+    },
+    {
+      path: '/notifications',
+      name: '',
+      component: Notifications
+    },
+    {
+      path: '/chat',
+      name: '',
+      component: Messenger
+    },
+    {
+      path: '/search',
+      name: '',
+      component: Search
     }
   ]
 })

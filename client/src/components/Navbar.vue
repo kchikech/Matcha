@@ -9,12 +9,12 @@
     </v-app-bar-title>
     <v-spacer></v-spacer>
     <v-layout v-if="status" justify-end>
-      <!-- <v-menu bottom offset-y v-model="notifMenu" :nudge-width="250"> -->
-        <!-- <template v-slot:activator="{ on }">
-          <v-btn text icon large color="grey" v-on="on"><v-badge overlap :value="!!notifNum" color="primary" class="mx-2" right><template v-slot:badge><span>{{ notifNum }}</span></template><v-icon color="grey">notifications</v-icon></v-badge></v-btn>
-        </template> -->
-        <!-- <v-list class="grey lighten-5 pa-0"> -->
-          <!-- <template v-for="(item, i) in notifs">
+      <v-menu bottom offset-y v-model="notifMenu" :nudge-width="250"> -->
+        <template v-slot:activator="{ on }">
+          <v-btn text icon large color="grey" v-on="on"><v-badge overlap :value="!!notifNum" color="primary" class="mx-2" right><template v-slot:badge><span>{{ notifNum }}</span></template><v-icon color="grey">mdi-bell</v-icon></v-badge></v-btn>
+        </template>
+        <v-list class="grey lighten-5 pa-0">
+           <template v-for="(item, i) in notifs">
             <v-list-item :key="i" avatar @click="toUserProfile(item.id_from)">
               <v-list-item-avatar>
                 <img :src="getFullPath(item.profile_image)">
@@ -30,20 +30,20 @@
                 </v-list-item-sub-title>
               </v-list-item-content>
             </v-list-item>
-          </template> -->
-          <!-- <v-list-item router to="/notifications" class="see_all">
+          </template>
+          <v-list-item router to="/notifications" class="see_all">
             <v-list-item-title>See all notifications</v-list-item-title>
           </v-list-item>
-        </v-list> -->
-      <!-- </v-menu> -->
-      <!-- <v-menu bottom offset-y v-model="msgMenu" :nudge-width="250"> -->
-        <!-- <template v-slot:activator="{ on }">
+        </v-list>
+      </v-menu>
+      <v-menu bottom offset-y v-model="msgMenu" :nudge-width="250">
+        <template v-slot:activator="{ on }">
           <v-btn text icon large color="grey" v-on="on">
             <v-badge overlap :value="!!newMsgNum" color="primary" class="mx-2" right>
               <template v-slot:badge>
                 <span>{{ newMsgNum }}</span>
               </template>
-              <v-icon color="grey">chat</v-icon>
+              <v-icon color="grey">mdi-chat</v-icon>
             </v-badge>
           </v-btn>
         </template>
@@ -70,8 +70,8 @@
           <v-list-item router to="/chat" class="see_all">
             <v-list-item-title>See all chats</v-list-item-title>
           </v-list-item>
-        </v-list> -->
-      <!-- </v-menu> -->
+        </v-list>
+      </v-menu>
     </v-layout>
     <div v-if="!status">
       <v-btn text color="grey" router to="/login">Login</v-btn>
@@ -119,6 +119,7 @@
 
 import utility from '../utility.js'
 import { mapGetters, mapActions } from 'vuex'
+import moment from 'moment'
 
 export default {
   name: 'Navbar',
@@ -183,9 +184,9 @@ export default {
   computed: {
     ...mapGetters([
       'user',
-      // 'notif',
+      'notif',
       'status',
-      // 'convos',
+      'convos',
       // 'typingSec',
       'profileImage'
     ]),
@@ -194,48 +195,49 @@ export default {
     // },
     image () {
       return this.getFullPath(this.profileImage)
+    },
+    notifs () {
+      return this.notif.filter(cur => cur.type !== 'chat').sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 7)
+    },
+    menuConvos () {
+      return this.convos.slice(0, 7)
     }
-    // notifs () {
-    //   return this.notif.filter(cur => cur.type != 'chat').sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 7)
-    // },
-    // menuConvos () {
-    //   return this.convos.slice(0, 7)
-    // }
   },
-  // watch: {
-  //   notif: {
-  //     immediate: true,
-  //     handler () {
-  //       this.newMsgNum = this.notif
-  //         .filter(cur => cur.type == 'chat' && !cur.is_read).length
-  //       this.notifNum = this.notif
-  //         .filter(cur => cur.type != 'chat' && !cur.is_read).length
-  //     }
-  //   },
-  //   async notifMenu () {
-  //     if (this.notifMenu) {
-  //       const url = `${process.env.URL}/api/notif/update`
-  //       const headers = { 'x-auth-token': this.user.token }
-  //       const res = await this.$http.get(url, { headers })
-  //       this.seenNotif()
-  //     }
-  //   },
-  //   typingConvos () {
-  //     if (this.typingSec.status) {
-  //       const len = this.typingSec.convos.length
-  //       const convId = this.typingSec.convos[len - 1].id_conversation
-  //       if (this.timer[convId]) clearTimeout(this.timer[convId])
-  //       this.timer[convId] = setTimeout(() => this.typingSecClr(convId), 1200)
-  //     }
-  //   }
-  // },
+  watch: {
+    notif: {
+      immediate: true,
+      handler () {
+        this.newMsgNum = this.notif
+          .filter(cur => cur.type === 'chat' && !cur.is_read).length
+        this.notifNum = this.notif
+          .filter(cur => cur.type !== 'chat' && !cur.is_read).length
+      }
+    },
+    async notifMenu () {
+      if (this.notifMenu) {
+        const url = `${process.env.URL}/api/notif/update`
+        const headers = { 'x-auth-token': this.user.token }
+        // eslint-disable-next-line
+        const res = await this.$http.get(url, { headers })
+        this.seenNotif()
+      }
+    },
+    typingConvos () {
+      if (this.typingSec.status) {
+        const len = this.typingSec.convos.length
+        const convId = this.typingSec.convos[len - 1].id_conversation
+        if (this.timer[convId]) clearTimeout(this.timer[convId])
+        this.timer[convId] = setTimeout(() => this.typingSecClr(convId), 1200)
+      }
+    }
+  },
   methods: {
     ...utility,
     ...mapActions({
       in: 'login',
-      out: 'logout'
-      // syncConvo: 'syncConvo',
-      // seenNotif: 'seenNotif',
+      out: 'logout',
+      syncConvo: 'syncConvo',
+      seenNotif: 'seenNotif'
       // typingSecClr: 'typingSecClr'
     }),
     toUserProfile (id) {
@@ -255,10 +257,10 @@ export default {
       } catch (err) {
         console.log('problem with -->', err)
       }
+    },
+    formatNotifDate (item) {
+      return moment.utc(item.date ? item.date : item.last_update).fromNow()
     }
-    // formatNotifDate (item) {
-    //   return moment.utc(item.date ? item.date : item.last_update).fromNow()
-    // }
   }
 }
 

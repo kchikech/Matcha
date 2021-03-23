@@ -3,33 +3,33 @@ import utility from '../utility'
 export const getters = {
 	user: state => state.user,
 	tags: state => state.tags.filter(cur => cur.length),
-	// notif: state => state.notif,
-	// typing: state => state.typing,
-	// online: state => state.online,
+	notif: state => state.notif,
+	typing: state => state.typing,
+	online: state => state.online,
 	status: state => state.status,
 	blocked: state => state.blocked,
 	location: state => state.location,
-	// typingSec: state => state.typingSec,
-	// seenConvo: state => state.seenConvo,
+	typingSec: state => state.typingSec,
+	seenConvo: state => state.seenConvo,
 	blockedBy: state => state.blockedBy,
 	blacklist: state => state.blacklist,
 	followers: state => state.followers,
-	// newMessage: state => state.newMessage,
-	// selectedConvo: state => state.selectedConvo,
-	// convos: state => [...state.convos].sort((a, b) => new Date(b.last_update) - new Date(a.last_update)),
+	newMessage: state => state.newMessage,
+	selectedConvo: state => state.selectedConvo,
+	convos: state => [...state.convos].sort((a, b) => new Date(b.last_update) - new Date(a.last_update)),
 	following: state => state.following,
-	// imageConvo: state => {
-	// 	const convo = state.convos.find(cur => cur.id_conversation == state.selectedConvo)
-	// 	return convo ? convo.profile_image : null
-	// },
-	// usernameConvo: state => {
-	// 	const convo = state.convos.find(cur => cur.id_conversation == state.selectedConvo)
-	// 	return convo ? convo.username : null
-	// },
-	// idUserConvo: state => {
-	// 	const convo = state.convos.find(cur => cur.id_conversation == state.selectedConvo)
-	// 	return convo ? convo.user_id : null
-	// },
+	imageConvo: state => {
+		const convo = state.convos.find(cur => cur.id_conversation == state.selectedConvo)
+		return convo ? convo.profile_image : null
+	},
+	usernameConvo: state => {
+		const convo = state.convos.find(cur => cur.id_conversation == state.selectedConvo)
+		return convo ? convo.username : null
+	},
+	idUserConvo: state => {
+		const convo = state.convos.find(cur => cur.id_conversation == state.selectedConvo)
+		return convo ? convo.user_id : null
+	},
 	history: state => {
 		return [
 			...state.visitor.map(cur => ({

@@ -220,7 +220,7 @@ const getImagesByUid = (user_id) => {
 // Add images 
 
 const insertImages = (user, callback) => {
-	let request = `INSERT INTO images (user_id, name, profile) VALUES (${user.id}, '${user.imgName}', 1)`
+	let request = `INSERT INTO images (user_id, name, profile) VALUES (${user.id}, '${user.imgName}', '1')`
 	db.query(request, (error, results) => {
 		if (error) throw error
 		callback(results)
@@ -289,7 +289,7 @@ const setImages = (user_id) => {
 
 const getBlocked = (users) => {
 	let request = `SELECT * FROM blocked where blocker = ? OR blocked = ?`
-	return db.query(request, users)
+	return db.query(request, [users, users])
 }
 
 //  Block user 
@@ -317,7 +317,7 @@ const reportUser = (id) => {
 
 const updateLocation = (lat, long, id) => {
 	let request = `UPDATE users SET lat = ?, lng = ? WHERE id = ?`
-	return db.query(request, [let, long, id])
+	return db.query(request, [lat, long, id])
 }
 
 const blacklist = (placehoder) => {

@@ -22,14 +22,14 @@ routes.post('/changepassword', authCheck, userProfile.changePassword)
 routes.get('/show', authCheck, browsing.showUsers)
 routes.get('/show/:id', authCheck, browsing.showUserById)
 
-routes.get('/show', authCheck, browsing.showUsers)
+routes.post('/show', authCheck, browsing.showUsers)
 routes.get('/show/:id', authCheck, browsing.showUserById)
 
 routes.post('/report', authCheck, block.reportUser)
 routes.post('/block', authCheck, block.blockUser)
 routes.post('/unblock', authCheck, block.unblockUser)
 routes.get('/getblocked', authCheck, browsing.getBlocked)
-routes.get('/blacklister', authCheck, userProfile.blacklisted)
+routes.post('/blacklisted', authCheck, userProfile.blacklisted)
 
 routes.post('/location', authCheck, location)
 

@@ -23,19 +23,19 @@
   </v-layout>
   <v-expansion-panels >
   <v-expansion-panel v-model="blacklistPanel" :disabled="closePanel" class="blacklist">
-    <v-expansion-panel-content  :ripple="{ class: 'primary--text' }" expand-icon="keyboard_arrow_down">
-      <template v-slot:header>
-        <div class="subheading expansion_list">Blacklist</div>
-      </template>
+      <v-expansion-panel-header>
+        <div class="expansion_list">Blacklist</div>
+      </v-expansion-panel-header>
+    <v-expansion-panel-content  :ripple="{ class: 'primary--text' }" expand-icon="mdi-arrow-down">
       <v-list class="blacklist_list">
-        <v-list-tile v-for="banned in blacklist" :key="banned.id" class="blacklist_item mx-2">
-          <v-list-tile-content>
-            <v-list-tile-title>{{ banned.username }}</v-list-tile-title>
-          </v-list-tile-content>
-          <v-list-tile-action>
-            <v-icon @click="unBlock(banned)">close</v-icon>
-          </v-list-tile-action>
-        </v-list-tile>
+        <v-list-item v-for="banned in blacklist" :key="banned.id" class="blacklist_item mx-2">
+          <v-list-item-content>
+            <v-list-item-title>{{ banned.username }}</v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-action>
+            <v-icon @click="unBlock(banned)">mdi-close</v-icon>
+          </v-list-item-action>
+        </v-list-item>
       </v-list>
     </v-expansion-panel-content>
   </v-expansion-panel>
@@ -117,7 +117,7 @@ export default {
     showNewPass: false,
     blacklistOn: false,
     emailDialog: false,
-    blacklistPanel: null,
+    blacklistPanel: true,
     showConfNewPass: false,
     password: '',
     newPassword: '',
@@ -165,7 +165,7 @@ export default {
     },
     closePanel () {
       if (!this.blacklist.length) {
-        // this.blacklistPanel = null
+        // this.blacklistPanel = false
         return true
       }
       return false
@@ -279,6 +279,7 @@ export default {
     },
     async unBlock (banned) {
       const { id, username } = banned
+      console.log(banned)
       const url = `${process.env.URL}/api/users/unblock`
       const headers = { 'x-auth-token': this.user.token }
       const result = await this.$http.post(url, { id }, { headers })

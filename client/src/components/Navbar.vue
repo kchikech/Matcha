@@ -194,6 +194,7 @@ export default {
     //   return this.typingSec.convos ? this.typingSec.convos.length : false
     // },
     image () {
+      console.log(this.profileImage)
       return this.getFullPath(this.profileImage)
     },
     notifs () {

@@ -89,7 +89,7 @@ export default {
               user.birthdate = new Date(user.birthdate).toISOString().substr(0, 10)
             }
             this.login(user)
-            // this.updateLocation()
+            this.updateLocation()
             this.$router.push('/')
           }
         }

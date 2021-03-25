@@ -12,6 +12,7 @@ import Messenger from '../components/Messenger'
 import Search from '../components/Search'
 import UserProfile from '../components/UserProfile'
 import Discover from '../components/Discover'
+import NotFound from '../components/NotFound'
 
 Vue.use(Router)
 Vue.use(VueRessource)
@@ -82,6 +83,14 @@ export default new Router({
       name: 'discover',
       path: '/discover',
       component: Discover
+    },
+    {
+      path: '/404',
+      component: NotFound
+    },
+    {
+      path: '*',
+      redirect: '/404'
     }
   ]
 })

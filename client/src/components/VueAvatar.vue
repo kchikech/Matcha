@@ -1,11 +1,24 @@
 <template>
   <div class="editor">
-    <canvas id="canvas__editor" :width="canvasWidth" :height="canvasHeight" ref="canvas" @dragover.prevent @drop="onDrop" @mousedown="onDragStart" @mouseup="onDragEnd" @mousemove="onMouseMove" @click="clicked" v-bind:class="cursor"></canvas>
+    <canvas
+      id="canvas__editor"
+      :width="canvasWidth"
+      :height="canvasHeight"
+      ref="canvas"
+      @dragover.prevent
+      @drop="onDrop"
+      @mousedown="onDragStart"
+      @mouseup="onDragEnd"
+      @mousemove="onMouseMove"
+      @click="clicked"
+      v-bind:class="cursor"
+    ></canvas>
     <input type="file" id='profileInput' @change="fileSelected" accept="image/*" class="d-none">
   </div>
 </template>
 
 <script>
+/* eslint-disable */
 const drawRoundedRect = (context, x, y, width, height, borderRadius) => {
   if (borderRadius === 0) {
     context.rect(x, y, width, height)
@@ -24,28 +37,28 @@ const drawRoundedRect = (context, x, y, width, height, borderRadius) => {
   }
 }
 export default {
-  props: {
-    image: { type: String, default: '' },
-    border: { type: Number, default: 25 },
-    borderRadius: { type: Number, default: 0 },
-    width: { type: Number, default: 200 },
-    height: { type: Number, default: 200 },
-    color: { type: Array, default: function () { return [0, 0, 0, 0.5] } }
+  props:{
+    image:			{ type: String, default: '' },
+    border:			{ type: Number, default: 25 },
+    borderRadius:	{ type: Number, default: 0 },
+    width:			{ type: Number, default: 200 },
+    height:			{ type: Number, default: 200 },
+    color:			{ type: Array, default: function() { return [0, 0, 0, 0.5] } }
   },
-  data: function () {
+  data:function(){
     return {
-      cursor: 'cursorPointer',
-      scale: 1,
-      canvas: null,
-      context: null,
-      dragged: false,
-      imageLoaded: false,
-      changed: false,
+      cursor:'cursorPointer',
+      scale:1,
+      canvas:null,
+      context:null,
+      dragged:false,
+      imageLoaded:false,
+      changed:false,
       state: {
         drag: false,
         my: null,
         mx: null,
-        xxx: 'ab',
+        xxx: "ab",
         image: {
           x: 0,
           y: 0,
@@ -54,55 +67,54 @@ export default {
       }
     }
   },
-  computed: {
-    canvasWidth: function () {
+  computed:{
+    canvasWidth:function(){
       return this.getDimensions().canvas.width
     },
-    canvasHeight: function () {
+    canvasHeight:function(){
       return this.getDimensions().canvas.height
     }
   },
-  mounted: function () {
+  mounted: function() {
     this.init()
   },
   methods: {
-    clearCanvas: function () {
+    clearCanvas: function() {
       this.context.clearRect(0, 0, this.width, this.height)
     },
-    init: function () {
+    init: function() {
       this.canvas = this.$refs.canvas
       this.context = this.canvas.getContext('2d')
       this.paint()
       this.clearCanvas()
-      if (!this.image) {
-        var placeHolder = this.svgToImage(this.context, '<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 65 65"><defs><style>.cls-1{fill:#999;}</style></defs><title>Upload_Upload</title><path class="cls-1" d="M32.5,1A31.5,31.5,0,1,1,1,32.5,31.54,31.54,0,0,1,32.5,1m0-1A32.5,32.5,0,1,0,65,32.5,32.5,32.5,0,0,0,32.5,0h0Z"/><polygon class="cls-1" points="41.91 28.2 32.59 18.65 23.09 28.39 24.17 29.44 31.87 21.54 31.87 40.05 33.37 40.05 33.37 21.59 40.83 29.25 41.91 28.2"/><polygon class="cls-1" points="40.66 40.35 40.66 44.35 24.34 44.35 24.34 40.35 22.34 40.35 22.34 44.35 22.34 46.35 24.34 46.35 40.66 46.35 42.66 46.35 42.66 44.35 42.66 40.35 40.66 40.35"/></svg>')
-        var self = this.placeHolder.onload = function () {
-          // var dim = self.getDimensions()
+      if(!this.image) {
+        var placeHolder = this.svgToImage(this.context, '<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 65 65"><defs><style>.cls-1{fill:#999;}</style></defs><title>Upload_Upload</title><path class="cls-1" d="M32.5,1A31.5,31.5,0,1,1,1,32.5,31.54,31.54,0,0,1,32.5,1m0-1A32.5,32.5,0,1,0,65,32.5,32.5,32.5,0,0,0,32.5,0h0Z"/><polygon class="cls-1" points="41.91 28.2 32.59 18.65 23.09 28.39 24.17 29.44 31.87 21.54 31.87 40.05 33.37 40.05 33.37 21.59 40.83 29.25 41.91 28.2"/><polygon class="cls-1" points="40.66 40.35 40.66 44.35 24.34 44.35 24.34 40.35 22.34 40.35 22.34 44.35 22.34 46.35 24.34 46.35 40.66 46.35 42.66 46.35 42.66 44.35 42.66 40.35 40.66 40.35"/></svg>');
+        var self = this;
+        placeHolder.onload = function() {
+          var dim = self.getDimensions()
           var x = self.canvasWidth / 2 - this.width / 2
           var y = self.canvasHeight / 2 - this.height / 2
-          self.context.drawImage(placeHolder, x, y, this.width, this.height)
+          self.context.drawImage(placeHolder, x, y, this.width, this.height);
         }
       } else {
         this.loadImage(this.image)
       }
     },
-    svgToImage: function (ctx, rawSVG) {
-      console.log('svgtoimage')
-      // var svg
-      // svg = new Blob([rawSVG], { type: 'image/svg+xml;charset=utf-8' })
-      // domURL = self.URL || self.webkitURL || self
-      // url = domURL.createObjectURL(svg)
-      // img = new Image()
-      // img.src = url
-      // return img
+    svgToImage: function(ctx, rawSVG) {
+      var svg = new Blob([rawSVG], {type:"image/svg+xml;charset=utf-8"}),
+      domURL = self.URL || self.webkitURL || self,
+      url = domURL.createObjectURL(svg),
+      img = new Image;
+      img.src = url;
+      return img;
     },
-    setState: function (state1) {
-      var min = Math.ceil(1)
-      var max = Math.floor(10000)
-      this.state = state1
+    setState: function(state1){
+      var min = Math.ceil(1);
+      var max = Math.floor(10000);
+      this.state = state1;
       this.state.cnt = 'HELLO' + Math.floor(Math.random() * (max - min)) + min
     },
-    paint: function () {
+    paint: function(){
       this.context.save()
       this.context.translate(0, 0)
       this.context.fillStyle = 'rgba(' + this.color.slice(0, 4).join(',') + ')'
@@ -121,7 +133,7 @@ export default {
       this.context.fill('evenodd')
       this.context.restore()
     },
-    getDimensions: function () {
+    getDimensions: function(){
       return {
         width: this.width,
         height: this.height,
@@ -132,12 +144,12 @@ export default {
         }
       }
     },
-    onDrop: function (e) {
+    onDrop: function(e){
       e = e || window.event
       e.stopPropagation()
       e.preventDefault()
       if (e.dataTransfer && e.dataTransfer.files.length) {
-        // this.props.onDropFile(e)
+        //this.props.onDropFile(e)
         const reader = new FileReader()
         const file = e.dataTransfer.files[0]
         this.changed = true
@@ -145,21 +157,22 @@ export default {
         reader.readAsDataURL(file)
       }
     },
-    onDragStart: function (e) {
+    onDragStart: function(e){
       e = e || window.event
       e.preventDefault()
       this.state.drag = true
+      
       this.state.mx = null
       this.state.my = null
       this.cursor = 'cursorGrabbing'
     },
-    onDragEnd: function (e) {
+    onDragEnd: function(e){
       if (this.state.drag) {
         this.state.drag = false
         this.cursor = 'cursorPointer'
       }
     },
-    onMouseMove: function (e) {
+    onMouseMove:function(e){
       e = e || window.event
       if (this.state.drag === false) {
         return
@@ -181,17 +194,17 @@ export default {
       this.state.mx = newState.mx
       this.state.my = newState.my
       this.state.image = imageState
-      // this.setState(newState)
+      //this.setState(newState)
     },
     loadImage: function (imageURL) {
       var imageObj = new Image()
       var self = this
-      imageObj.onload = function () {
+      imageObj.onload = function(){
         self.handleImageReady(imageObj)
       }
-      // imageObj.onerror = this.props.onLoadFailure
+      //imageObj.onerror = this.props.onLoadFailure
       if (!this.isDataURL(imageURL)) imageObj.crossOrigin = 'anonymous'
-      imageObj.src = imageURL
+        imageObj.src = imageURL
     },
     handleImageReady: function (image) {
       var imageState = this.getInitialSize(image.width, image.height)
@@ -205,7 +218,7 @@ export default {
       this.state.image.y = 0
       this.state.image.resource = image
       this.state.image.width = imageState.width
-      this.state.image.height = imageState.height
+      this.state.image.height= imageState.height
       this.state.drag = false
       this.scale = 1
       this.$emit('vue-avatar-editor:image-ready', this.scale)
@@ -232,17 +245,16 @@ export default {
     },
     isDataURL (str) {
       if (str === null) return false
-      // eslint-disable-next-line
       return !!str.match(/^\s*data:([a-z]+\/[a-z]+(;[a-z\-]+=[a-z\-]+)?)?(;base64)?,[a-z0-9!$&',()*+;=\-._~:@\/?%\s]*\s*$/i)
     },
-    getBoundedX: function (x, scale) {
+    getBoundedX:function (x, scale) {
       var image = this.state.image
       var dimensions = this.getDimensions()
       let widthDiff = Math.floor((image.width - dimensions.width / scale) / 2)
       widthDiff = Math.max(0, widthDiff)
       return Math.max(-widthDiff, Math.min(x, widthDiff))
     },
-    getBoundedY: function (y, scale) {
+    getBoundedY:function (y, scale) {
       var image = this.state.image
       var dimensions = this.getDimensions()
       let heightDiff = Math.floor((image.height - dimensions.height / scale) / 2)
@@ -258,8 +270,8 @@ export default {
         context.restore()
       }
     },
-    calculatePosition: function (image, border) {
-      image = image || this.state.image
+    calculatePosition:function (image, border) {
+      var image = image || this.state.image
       var dimensions = this.getDimensions()
       var width = image.width * this.scale
       var height = image.height * this.scale
@@ -269,16 +281,16 @@ export default {
       var y = image.y * this.scale - heightDiff + border
       return { x, y, height, width }
     },
-    changeScale: function (sc) {
+    changeScale: function(sc) {
       this.changed = true
       this.scale = sc
     },
-    redraw: function () {
+    redraw: function() {
       this.context.clearRect(0, 0, this.getDimensions().canvas.width, this.getDimensions().canvas.height)
       this.paint()
       this.paintImage(this.context, this.state.image, this.border)
     },
-    getImage: function () {
+    getImage: function() {
       const cropRect = this.getCroppingRect()
       const image = this.state.image
       // get actual pixel coordinates
@@ -295,7 +307,7 @@ export default {
       canvas.getContext('2d').drawImage(image.resource, -cropRect.x, -cropRect.y)
       return canvas
     },
-    getImageScaled: function () {
+    getImageScaled: function() {
       const { width, height } = this.getDimensions()
       const canvas = document.createElement('canvas')
       canvas.width = width
@@ -306,7 +318,7 @@ export default {
       this.init()
       return canvas
     },
-    imageChanged: function () {
+    imageChanged: function() {
       return this.changed
     },
     getCroppingRect: function () {
@@ -320,36 +332,38 @@ export default {
         height: frameRect.height / imageRect.height
       }
     },
-    clicked (e) {
-      if (this.dragged === true) {
+    clicked (e){
+      if (this.dragged == true) {
         this.dragged = false
       } else {
         document.getElementById('profileInput').click()
       }
     },
     fileSelected (e) {
-      var files = e.target.files || e.dataTransfer.files
-      if (!files.length || files[0].type.split('/')[0] !== 'image') {
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length || files[0].type.split('/')[0] != 'image') {
         this.$emit('file_error')
         return
       }
       this.$emit('file_success')
-      // var image = new Image()
-      var reader = new FileReader()
+      var image = new Image();
+      var reader = new FileReader();
       this.changed = true
       reader.onload = e => this.loadImage(e.target.result)
-      reader.readAsDataURL(files[0])
+      reader.readAsDataURL(files[0]);
     }
   },
   watch: {
-    state: {
-      handler: function (val, oldval) {
-        if (this.imageLoaded === true) this.redraw()
+    state:{
+      handler: function(val, oldval) {
+        if(this.imageLoaded == true)
+          this.redraw();
       },
       deep: true
     },
-    scale: function () {
-      if (this.imageLoaded === true) this.redraw()
+    scale: function() {
+      if (this.imageLoaded == true)
+        this.redraw();
     }
   }
 }

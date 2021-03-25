@@ -198,6 +198,7 @@ export default {
       return false
     },
     profileImage () {
+      console.log(this.getProfileImage())
       return this.getFullPath(this.getProfileImage())
     },
     userCantLike () {
@@ -314,7 +315,7 @@ export default {
       const res = await this.$http.post(url, data, { headers })
       if (res.body.ok) {
         this.liked = !this.liked
-        const profileImg = this.loggedIn.images.find(cur => cur.profile === 1)
+        const profileImg = this.loggedIn.images.find(cur => cur.profile === true)
         const data = {
           date: new Date(),
           id_from: this.loggedIn.id,
@@ -340,6 +341,7 @@ export default {
       let data = { id: this.$route.params.id }
       const headers = { 'x-auth-token': this.loggedIn.token }
       const res = await this.$http.post(url, data, { headers })
+      console.log(res.body.msg)
       if (!res.body.msg) {
         this.syncBlocked(this.loggedIn.id)
         data = {

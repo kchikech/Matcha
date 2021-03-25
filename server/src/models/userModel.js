@@ -301,7 +301,7 @@ const blockUser = (user_id , id) => {
 
 // Unblock user 
 
-const unblockUser = (id, user_id) => {
+const unblockUser = (user_id, id) => {
 	let request = `DELETE FROM blocked WHERE blocker = ? AND blocked = ?`
 	return db.query(request, [user_id, id])
 }

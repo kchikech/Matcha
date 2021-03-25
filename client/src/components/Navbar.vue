@@ -218,7 +218,7 @@ export default {
         const url = `${process.env.URL}/api/notif/update`
         const headers = { 'x-auth-token': this.user.token }
         // eslint-disable-next-line
-        const res = await this.$http.post(url, { headers })
+        const res = await this.$http.post(url, {} ,{headers} )
         this.seenNotif()
       }
     },

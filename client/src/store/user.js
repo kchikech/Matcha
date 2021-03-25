@@ -50,7 +50,7 @@ export const user = {
         let len = state.user.images.length
         while (--len >= 0) {
           if (!state.user.images[len].cover) {
-            state.user.images[len].profile = true
+            state.user.images[len].profile = 1
             break
           }
         }

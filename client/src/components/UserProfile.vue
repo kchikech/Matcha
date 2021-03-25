@@ -314,7 +314,7 @@ export default {
       const res = await this.$http.post(url, data, { headers })
       if (res.body.ok) {
         this.liked = !this.liked
-        const profileImg = this.loggedIn.images.find(cur => cur.profile === true)
+        const profileImg = this.loggedIn.images.find(cur => cur.profile === 1)
         const data = {
           date: new Date(),
           id_from: this.loggedIn.id,
@@ -375,7 +375,7 @@ export default {
               this.$router.push('/404')
             }
             this.user = { ...res.body, rating: Number(res.body.rating) }
-            const profileImg = this.loggedIn.images.find(cur => cur.profile === true)
+            const profileImg = this.loggedIn.images.find(cur => cur.profile === 1)
             if (this.online.includes(this.user.id)) {
               this.user.status = true
             }

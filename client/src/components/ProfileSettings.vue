@@ -1,14 +1,6 @@
 <template>
 <v-container>
   <h1 class="heading display-2 font-weight-thin py-3 mb-4">Parameters</h1>
-  <!-- <v-layout justify-center>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on }">
-        <div v-for="(color, i) in colors" :key="i" :style="`background:${color};`" class="color_picker" @click="changeTheme(color)" v-on="on"></div>
-      </template>
-      <span>Use theme</span>
-    </v-tooltip>
-  </v-layout> -->
   <v-layout wrap justify-center align-start class="my-4">
     <v-flex xs12 sm6 class="px-3 my-3">
       <v-layout align-center class="px-3">

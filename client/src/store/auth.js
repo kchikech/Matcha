@@ -6,7 +6,7 @@ export const auth = {
       state.status = true
       state.user = user
       if (!state.isConnected) {
-        (new Vue()).$socket.emit('auth', state.user.id)
+        new Vue().$socket.emit('auth', state.user.id)
         state.isConnected = true
       }
     },
@@ -48,7 +48,8 @@ export const auth = {
     },
     logout: ({ commit }, id) => {
       localStorage.clear()
-      commit('logout')(new Vue()).$socket.emit('logout', id)
+      commit('logout')
+      new Vue().$socket.emit('logout', id)
     }
   }
 }

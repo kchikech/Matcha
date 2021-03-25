@@ -253,7 +253,9 @@ export default {
         const headers = { 'x-auth-token': this.user.token }
         const res = await this.$http.get(url, { headers })
         if (res.body.ok) this.out(this.user.id)
-        this.$router.push('/')
+        // eslint-disable-next-line
+        this.$router.push('/').catch(err => {
+        })
       } catch (err) {
         console.log('problem with -->', err)
       }

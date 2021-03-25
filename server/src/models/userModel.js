@@ -287,16 +287,16 @@ const setImages = (user_id) => {
 
 // get Blocked  users 
 
-const getBlocked = (users) => {
+const getBlocked = (id) => {
 	let request = `SELECT * FROM blocked where blocker = ? OR blocked = ?`
-	return db.query(request, [users, users])
+	return db.query(request, [id, id])
 }
 
 //  Block user 
 
-const blockUser = (users) => {
+const blockUser = (user_id , id) => {
 	let request = `INSERT INTO blocked (blocker, blocked) VALUES (?, ?)`
-	return db.query(request, users)
+	return db.query(request, [user_id , id])
 }
 
 // Unblock user 

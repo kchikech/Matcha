@@ -12,9 +12,9 @@ const blockUser = async (req, res) => {
 		return res.json({ msg: 'Invalid request' })
 	try {
 		const users = [req.user.id, req.body.id]
-		const result = userModel.getBlocked(users)
+		const result = userModel.getBlocked(req.user.id)
 		if (!result.length) {
-			await userModel.blockUser(users)
+			await userModel.blockUser(req.user.id, req.body.id)
 			await chatModel.disallowConv(req.user.id, req.body.id)
 			await matchingModel.delMatche(req.user.id, req.body.id)
 			await notifModel.delNotif(req.user.id, req.body.id)

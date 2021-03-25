@@ -1,30 +1,31 @@
 const db = require('../utility/database')
+const { user } = require('../config/db')
 
 // Get conversation 
 
-const getConv = (users) => {
+const getConv = (user_id , id) => {
 	let request = `SELECT * FROM conversations
 								WHERE 
 									id_user1 = ? AND id_user2 = ?
 								OR 
 									id_user2 = ? AND id_user1 = ?`
-	return db.query(request, [...data, ...data])
+	return db.query(request, [user_id, id , id , user_id])
 }
 
 // Insert new conv 
 
-const insertConv = (users) => {
+const insertConv = (user1, user2) => {
 	let request = `INSERT INTO conversations (id_user1, id_user2) VALUES (?, ?)`
-	return db.query(request, users)
+	return db.query(request, [user1, user2])
 }
 
 // Set Conv Allowed 
 
-const disallowConv = (users) => {
+const disallowConv = (user_id, id) => {
 	let request = `UPDATE conversations SET allowed = 0
 	WHERE id_user1 = ? AND id_user2 = ?
 	OR id_user2 = ? AND id_user1 = ?`
-	return db.query(request, users)
+	return db.query(request, [user_id, id, id, user_id])
 }
 
 // Set Conv unallowed 

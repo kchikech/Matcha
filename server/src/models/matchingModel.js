@@ -42,9 +42,9 @@ const getFollowers = (user_id) => {
 
 // Make matching 
 
-const insertMatche = (users) => {
+const insertMatche = (user1, user2) => {
 	let request = `INSERT INTO matches (matcher, matched) VALUES (?, ?)`
-	return db.query(request, users)
+	return db.query(request, [user1, user2])
 }
 
 // Delete matche 
@@ -56,9 +56,9 @@ const delMatche = (user_id, id) => {
 
 // Get match 
 
-const getMatche = (users) => {
+const getMatche = (user_id, id) => {
 	let request = `SELECT * FROM matches where matcher = ? AND matched = ?`
-	return db.query(request, users)
+	return db.query(request, [user_id, id])
 }
 
 module.exports = {

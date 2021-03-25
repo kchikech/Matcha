@@ -301,7 +301,7 @@ export default {
     },
     getProfileImage () {
       if (!this.user || !this.user.images) return 'default.png'
-      const image = this.user.images.find(cur => cur.profile === true)
+      const image = this.user.images.find(cur => cur.profile === 1)
       return image ? image.name : 'default.png'
     },
     async match () {

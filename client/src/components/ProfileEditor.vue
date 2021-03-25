@@ -18,6 +18,8 @@
 </template>
 
 <script>
+/* eslint-disable */
+
 import { mapGetters } from 'vuex'
 import utility from '../utility.js'
 import Alert from './Alert'
@@ -57,9 +59,7 @@ export default {
       this.$refs.vueavatar.init()
     },
     pickFile () {
-      this.dialog = true
       if (this.user.images.length < 5) {
-        this.$refs.vueavatar.clicked()
         this.dialog = true
       } else {
         this.showAlert('red', 'Max photos if five, you must delete one in order to add', this)

@@ -217,7 +217,7 @@ export default {
     },
     async getChat () {
       try {
-        const url = `${process.env.URL}/api/chat/single`
+        const url = `${process.env.URL}/api/chat/messages`
         const headers = { 'x-auth-token': this.user.token }
         const data = {
           id: this.selectedConvo,

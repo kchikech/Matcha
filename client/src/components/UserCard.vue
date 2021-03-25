@@ -2,10 +2,10 @@
 <v-card router :to="`/user/${user.user_id}`">
   <v-layout column justify-center align-center class="pt-1">
     <v-layout justify-space-between class="top pa-2">
-      <v-chip disabled outline small color="grey lighten-1" class="ml-2">{{ distance }}</v-chip>
+      <v-chip disabled outlined small color="grey lighten-1" class="ml-2">{{ distance }}</v-chip>
       <v-tooltip bottom class="status_container">
         <template v-slot:activator="{ on }">
-          <v-icon :color="`${user.status ? 'green' : 'grey'} lighten-2`" class="status_icon mr-3" small v-on="on">fiber_manual_record</v-icon>
+          <v-icon :color="`${user.status ? 'green' : 'grey'} lighten-2`" class="status_icon mr-3" small v-on="on">mdi-circle</v-icon>
         </template>
         <span>{{ lastSeen }}</span>
       </v-tooltip>
@@ -19,9 +19,9 @@
       <v-rating readonly dense small :value="user.rating" half-increments class="rating"></v-rating>
     </v-layout>
     <v-layout justify-center align-center class="body-1 text-capitalize bottom mb-0 mt-auto py-2 px-4 grey lighten-5">
-      <v-icon v-if="user.birthdate" color="primary" class="cake_icon px-1" small>cake</v-icon>
+      <v-icon v-if="user.birthdate" color="primary" class="cake_icon px-1" small>mdi-cake</v-icon>
       <span v-if="user.birthdate" class="pr-1">{{ age }}</span>
-      <v-icon color="primary lighten-1" class="location_icon px-1" small>place</v-icon>
+      <v-icon color="primary lighten-1" class="location_icon px-1" small>mdi-map-marker</v-icon>
       <span  v-if="user.city && user.country" class="text-truncate">{{ `${user.city}, ${user.country}` }}</span>
       <span  v-else class="text-truncate">Earth</span>
     </v-layout>

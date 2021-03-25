@@ -57,6 +57,7 @@ export default {
       this.$refs.vueavatar.init()
     },
     pickFile () {
+      this.dialog = true
       if (this.user.images.length < 5) {
         this.$refs.vueavatar.clicked()
         this.dialog = true

@@ -1,56 +1,78 @@
 <template>
-<v-container class="pt-5 px-0 discover" v-if="loaded">
-  <v-layout wrap justify-center>
-    <v-flex :xl2="search" :xl4="!search" :md3="search" :md8="!search" sm10>
-      <v-container px-md-5>
-        <v-layout column>
-          <h4 class="title font-weight-thin mb-4">Show me</h4>
-          <v-btn-toggle class="mb-5" v-model="gender">
-            <v-btn class="toggle_btn" text outlined color="primary" value="male"><v-icon>mdi-gender-male</v-icon>
-              <span class="px-1">Men</span>
-            </v-btn>
-            <v-btn class="toggle_btn" text outlined color="primary" value="female"><v-icon>mdi-gender-female</v-icon>
-              <span class="px-1">Women</span>
-            </v-btn>
-          </v-btn-toggle>
-          <h4 class="title font-weight-thin mb-3">Distance</h4>
-          <v-range-slider class="mx-3 mb-5 pt-3" v-model="distance" hide-details :max="max" min="0" :step="step" thumb-label="always" thumb-size="30"></v-range-slider>
-          <h4 class="title font-weight-thin mb-3">Age</h4>
-          <v-range-slider class="mx-3 mb-4 pt-3" v-model="age" max="85" min="18" step="1" thumb-label="always" thumb-size="25"></v-range-slider>
-          <h4 class="title font-weight-thin mb-3">Fame</h4>
-          <v-range-slider class="mx-3 mb-4 pt-3" v-model="rating" max="5" min="0" step=".5" thumb-label="always" thumb-size="25"></v-range-slider>
-          <h4 class="title font-weight-thin mb-4">Near</h4>
-          <v-text-field class="loaction_input mb-4" color="primary" outlined solo text append-icon="mdi-map-marker" v-model="location"></v-text-field>
-          <h4 class="title font-weight-thin mb-4">Interests</h4>
-          <v-autocomplete v-model="interests" :items="allTags" solo text outlined multiple deletable-chips hide-details class="tags_menu mb-5" chips></v-autocomplete>
-          <v-layout align-center justify-between class="mb-4">
-            <h4 class="title font-weight-thin">Sort by</h4>
-            <v-btn text icon class="sort_btn" color="primary" @click="changeSort">
-              <v-icon :class="`sort_icon ${sortDir < 0 ? 'flip' : ''}`">mdi-sort</v-icon>
-            </v-btn>
+<div v-if="isComplet()" class="discover">
+  <v-container class="pt-5 px-0" v-if="loaded">
+    <v-layout wrap justify-center>
+      <v-flex xl2 md3 sm10>
+        <v-container px-md-5>
+          <v-layout column>
+            <h4 class="title font-weight-thin mb-4">Show me</h4>
+            <v-btn-toggle class="mb-5" v-model="gender">
+              <v-btn class="toggle_btn" text cdd color="primary" value="male" :disabled="!hasBoth">
+                <v-icon>mdi-gender-male</v-icon>
+                <span class="px-1">Men</span>
+              </v-btn>
+              <v-btn class="toggle_btn" text outlined color="primary" value="female" :disabled="!hasBoth">
+`               <v-icon>mdi-gender-female</v-icon>
+                <span class="px-1">Women</span>
+              </v-btn>
+            </v-btn-toggle>
+            <h4 class="title font-weight-thin mb-3">Distance</h4>
+            <v-range-slider class="mx-3 mb-5 pt-3" v-model="distance" hide-details :max="max" min="0" :step="step" thumb-label="always" thumb-size="30"></v-range-slider>
+            <h4 class="title font-weight-thin mb-3">Age</h4>
+            <v-range-slider class="mx-3 mb-5 pt-3" v-model="age" hide-details max="85" min="18" step="1" thumb-label="always" thumb-size="25"></v-range-slider>
+            <h4 class="title font-weight-thin mb-3">Fame</h4>
+            <v-range-slider class="mx-3 mb-5 pt-3" v-model="rating" hide-details max="5" min="0" step=".5" thumb-label="always" thumb-size="25"></v-range-slider>
+            <h4 class="title font-weight-thin mb-4">Near</h4>
+            <v-text-field class="loaction_input mb-5" color="primary" hide-details outlined solo text append-icon="mdi-map-marker" v-model="location"></v-text-field>
+            <h4 class="title font-weight-thin mb-4">Interests</h4>
+            <v-autocomplete
+              v-model="interests"
+              :items="allTags"
+              solo
+              text
+              outlined
+              multiple
+              deletable-chips
+              hide-details
+              class="tags_menu mb-5"
+              chips>
+            </v-autocomplete>
+            <v-layout align-center justify-between class="mb-4">
+              <h4 class="title font-weight-thin">Sort by</h4>
+              <v-btn text icon class="sort_btn" color="primary" @click="changeSort">
+                <v-icon :class="`sort_icon ${sortDir < 0 ? 'flip' : ''}`">mdi-sort</v-icon>
+              </v-btn>
+            </v-layout>
+            <v-select outlined solo v-model="sort" :items="sortTypes" class="sort_select mb-5"></v-select>
+            <h4 class="title font-weight-thin mb-4">Reset all</h4>
+            <v-btn outlined block large color="primary" class="clear_btn" @click="reset"><v-icon>mdi-refresh</v-icon></v-btn>
           </v-layout>
-          <v-select outlined solo v-model="sort" :items="sortTypes" class="sort_select mb-5"></v-select>
-          <v-layout :column="search" align-center justify-center>
-            <v-btn outlined block large color="primary" :class="`${search ? '' : 'mr-3'} clear_btn`" @click="reset">
-              <v-icon>refresh</v-icon>
-            </v-btn>
-            <v-btn outlined block large color="primary" :class="`${search ? '' : 'm-3'} clear_btn`" @click="search = true">
-              <v-icon>search</v-icon>
-            </v-btn>
-          </v-layout>
+        </v-container>
+      </v-flex>
+      <v-flex xl10 md9 sm12>
+        <v-layout row wrap justify-center>
+          <v-flex class="user" v-for="user in sorted" :key="user.user_id" xl2 lg3 sm3 ma-3 grow>
+            <user-card :user="user"/>
+          </v-flex>
         </v-layout>
-      </v-container>
-    </v-flex>
-    <v-flex xl10 md9 sm12 v-if="search">
-      <v-layout row wrap justify-center>
-        <v-flex class="user" v-for="user in sorted" :key="user.user_id" xl2 lg3 sm3 ma-3 grow>
-          <user-card :user="user"/>
-        </v-flex>
-      </v-layout>
+      </v-flex>
+    </v-layout>
+  </v-container>
+  <loader v-else/>
+</div>
+<v-container class="my-3" v-else>
+  <v-layout wrap justify-center>
+    <h2 class="display-2 text-xs-center font-weight-thin pt-4 pb-3 mb-4 grey--text mx-auto">
+      Complete your profile to the opportunity to discover users that matchs you !
+    </h2>
+    <v-flex xs6 md4>
+      <v-btn block outlined large router to="/settings" color="primary">
+        <v-icon left>mdi-chevron-left</v-icon>
+        <span>Go to setting</span>
+      </v-btn>
     </v-flex>
   </v-layout>
 </v-container>
-<loader v-else/>
 </template>
 
 <script>
@@ -66,23 +88,17 @@ export default {
     UserCard,
     loader
   },
-  props: {
-    data: {
-      type: Object,
-      default: () => ({ })
-    }
-  },
   data () {
     return {
       max: 0,
       step: 0,
-      search: false,
       sortDir: 1,
       sort: null,
       users: [],
       interests: [],
       gender: null,
       location: null,
+      hasBoth: false,
       loaded: false,
       age: [18, 85],
       rating: [0, 5],
@@ -96,7 +112,7 @@ export default {
         blockedBy: val => !this.blockedBy.includes(val.user_id),
         rating: val => val.rating >= this.rating[0] && val.rating <= this.rating[1],
         gender: val => !this.gender || val.gender === this.gender,
-        location: val => !this.location || [val.country, val.address, val.city].some(cur => cur && cur.has(this.location)),
+        location: val => !this.location || [val.country, val.address, val.city].some(cur => cur.has(this.location)),
         distance: val => {
           if (this.distance[0] === this.distance[1]) return true
           if (val.lat && val.lng) {
@@ -112,9 +128,7 @@ export default {
         },
         interest: val => {
           if (!this.interests.length) return true
-          for (const interest of this.interests) {
-            if (val.tags.split(',').includes(interest)) return true
-          }
+          for (const interest of this.interests) if (val.tags.split(',').includes(interest)) return true
           return false
         }
       }
@@ -124,14 +138,13 @@ export default {
     ...mapGetters({
       user: 'user',
       allTags: 'tags',
-      online: 'online',
       status: 'status',
+      online: 'online',
       blocked: 'blocked',
-      blockedBy: 'blockedBy',
-      userLocation: 'location'
+      userLocation: 'location',
+      blockedBy: 'blockedBy'
     }),
     filtered () {
-      if (!this.search) return []
       return this.users
         .filter(this.filters.self)
         .filter(this.filters.blocked)
@@ -144,7 +157,6 @@ export default {
         .filter(this.filters.interest)
     },
     sorted () {
-      if (!this.search) return []
       if (!this.sort || this.sort === 'distance') {
         return this.sortDir < 0 ? [...this.filtered].reverse() : this.filtered
       }
@@ -171,10 +183,11 @@ export default {
     maxDis () {
       if (this.sort === null && this.sortDir === 1 && this.users.length) {
         const { lat, lng } = this.users[this.users.length - 1]
-        const to = { lat: Number(lat), lng: Number(lng) }
-        const raw = (this.calculateDistance(this.userLocation, to) / 4).toFixed(0)
-        const r = Math.ceil(Number(raw) / Math.pow(10, raw.length - 1))
-        return Number(r + raw.split('').splice(1).map(cur => '0').join(''))
+        const to = {
+          lat: Number(lat),
+          lng: Number(lng)
+        }
+        return Math.ceil(this.calculateDistance(this.userLocation, to))
       }
     }
   },
@@ -182,20 +195,12 @@ export default {
     const token = localStorage.getItem('token')
     const url = `${process.env.URL}/api/users/show`
     const headers = { 'x-auth-token': token }
-    const res = await this.$http.post(url, {filter: false}, { headers })
+    const res = await this.$http.post(url, {filter: true}, { headers })
     if (!res.body.msg) {
-      this.users = res.body.map(cur => ({
+      this.users = res.body.slice(0, 100).map(cur => ({
         ...cur,
         rating: Number(cur.rating)
       }))
-      if (this.data.gender || this.data.location) {
-        if (this.data.gender !== 'null') this.gender = this.data.gender
-        if (this.data.location !== 'null') this.location = this.data.location
-        if (this.data.min && this.data.max && !isNaN(this.data.max) && !isNaN(this.data.min) && Number(this.data.max) >= Number(this.data.min)) {
-          this.age = [Number(this.data.min), Number(this.data.max)]
-        }
-        this.search = true
-      }
       this.whoIsUp()
       this.loaded = true
     } else {
@@ -203,28 +208,15 @@ export default {
       this.$router.push('/login')
     }
   },
-  methods: {
-    ...utility,
-    ...mapActions(['logout']),
-    reset () {
-      this.search = false
-      this.rating = [0, 5]
-      this.age = [18, 85]
-      this.gender = null
-      this.distance = [0, this.maxDis]
-      this.location = null
-    },
-    changeSort () {
-      this.sortDir = -this.sortDir
-    },
-    whoIsUp () {
-      this.users.forEach((user, i) => {
-        this.users[i].lastSeen = this.users[i].status
-        this.users[i].status = this.online.includes(user.user_id)
-      })
-    }
-  },
   watch: {
+    user: {
+      immediate: true,
+      handler () {
+        if (this.user.looking && this.user.looking === 'both') {
+          this.hasBoth = true
+        }
+      }
+    },
     online: {
       immediate: true,
       handler () {
@@ -263,6 +255,31 @@ export default {
         }
       }
     }
+  },
+  methods: {
+    ...utility,
+    ...mapActions(['logout']),
+    reset () {
+      this.sortDir = 1
+      this.sort = null
+      this.gender = null
+      this.age = [18, 85]
+      this.rating = [0, 5]
+      this.distance = [0, this.maxDis]
+      this.location = null
+    },
+    changeSort () {
+      this.sortDir = -this.sortDir
+    },
+    whoIsUp () {
+      this.users.forEach((user, i) => {
+        this.users[i].lastSeen = this.users[i].status
+        this.users[i].status = this.online.includes(user.user_id)
+      })
+    },
+    isComplet () {
+      return this.user.gender && this.user.gender.length && this.user.looking && this.user.biography && this.user.tags && this.user.images.length && this.user.city && this.user.country && this.user.postal_code
+    }
   }
 }
 </script>
@@ -272,9 +289,16 @@ export default {
   opacity: .7;
 }
 
+.theme--light.v-input:not(.v-input--is-disabled) input,
+.v-list.theme--light {
+  color: #777 !important;
+}
+
 .tags_menu
 > .v-input__control> .v-input__slot,
 .loaction_input
+> .v-input__control> .v-input__slot,
+.sort_select
 > .v-input__control> .v-input__slot {
   box-shadow: none !important;
   border: 2px solid var(--color-primary) !important;
@@ -283,6 +307,8 @@ export default {
 
 .v-slider.v-slider--is-active,
 .tags_menu.v-select--is-menu-active
+> .v-input__control > .v-input__slot,
+.sort_select.v-select--is-menu-active
 > .v-input__control > .v-input__slot,
 .loaction_input.v-input--is-focused
 > .v-input__control > .v-input__slot {
@@ -298,12 +324,7 @@ export default {
   color: var(--color-primary);
 }
 
-.v-menu__content.menuable__content__active.v-autocomplete__content {
-  border: 2px solid var(--color-primary);
-  border-top: none;
-  box-shadow: none;
-  transform: translateY(-3px);
-}
+.v-select-list.v-card.theme--light > .v-list,
 .theme--light.v-btn-toggle,
 .v-menu__content.menuable__content__active.v-autocomplete__content
 > .v-select-list > .v-list {
@@ -340,15 +361,7 @@ export default {
   padding: 0 !important;
 }
 
-.sort_select
-> .v-input__control> .v-input__slot {
-  box-shadow: none !important;
-  border: 2px solid var(--color-primary) !important;
-  opacity: .5;
-}
-
-.sort_select.v-select--is-menu-active
-> .v-input__control > .v-input__slot {
-  opacity: 1;
+.v-slider__thumb-label > span {
+  font-size: .8em;
 }
 </style>

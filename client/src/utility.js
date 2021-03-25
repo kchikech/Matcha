@@ -154,13 +154,13 @@ export default {
   getNotifIcon (type) {
     switch (type) {
       case 'visit':
-        return 'visibility'
+        return 'mdi-eye'
       case 'like':
-        return 'favorite'
+        return 'mdi-heart'
       case 'like_back':
-        return 'favorite'
+        return 'mdi-heart'
       case 'unlike':
-        return 'favorite_border'
+        return 'mdi-heart-outline'
     }
   },
   filterBlocked (state, type) {

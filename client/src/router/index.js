@@ -10,6 +10,8 @@ import Settings from '../components/Settings'
 import Notifications from '../components/Notifications'
 import Messenger from '../components/Messenger'
 import Search from '../components/Search'
+import UserProfile from '../components/UserProfile'
+import Discover from '../components/Discover'
 
 Vue.use(Router)
 Vue.use(VueRessource)
@@ -61,7 +63,25 @@ export default new Router({
     {
       path: '/search',
       name: '',
-      component: Search
+      component: Search,
+      props: route => ({
+        data: {
+          gender: route.query.gender,
+          location: route.query.location,
+          min: route.query.min,
+          max: route.query.max
+        }
+      })
+    },
+    {
+      name: 'userprofile',
+      path: '/user/:id',
+      component: UserProfile
+    },
+    {
+      name: 'discover',
+      path: '/discover',
+      component: Discover
     }
   ]
 })

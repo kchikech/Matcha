@@ -1,14 +1,14 @@
-// import Vue from 'vue'
+import Vue from 'vue'
 
 export const auth = {
   mutations: {
     login: (state, user) => {
       state.status = true
       state.user = user
-      // if (!state.isConnected) {
-      //   (new Vue()).$socket.emit('auth', state.user.id)
-      //   state.isConnected = true
-      // }
+      if (!state.isConnected) {
+        (new Vue()).$socket.emit('auth', state.user.id)
+        state.isConnected = true
+      }
     },
     logout: state => {
       state.status = false
@@ -48,8 +48,7 @@ export const auth = {
     },
     logout: ({ commit }, id) => {
       localStorage.clear()
-      commit('logout')
-      // (new Vue()).$socket.emit('logout', id)
+      commit('logout')(new Vue()).$socket.emit('logout', id)
     }
   }
 }

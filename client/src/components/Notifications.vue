@@ -52,7 +52,9 @@ export default {
     },
     notifs () {
       // eslint-disable-next-line
-      return this.notChats.sort((a, b) => (new Date(b.date) - new Date(a.date)).slice(0, this.limit))
+      return this.notChats
+        .sort((a, b) => new Date(b.date) - new Date(a.date))
+        .slice(0, this.limit)
     },
     moreToLoad () {
       return this.limit < this.notChats.length - 1

@@ -5,17 +5,17 @@
     <v-app-bar-nav-icon v-if="status" class="grey--text" @click="drawer = !drawer"></v-app-bar-nav-icon>
     <div v-else style="width:2.5rem;"></div>
     <v-app-bar-title class="text-uppercase grey--text">
-      <span>M</span><span class="font-weight-light">atcha</span>
+    <span class="font-weight-light">Matcha</span>
     </v-app-bar-title>
     <v-spacer></v-spacer>
     <v-layout v-if="status" justify-end>
-      <v-menu bottom offset-y v-model="notifMenu" :nudge-width="250"> -->
+      <v-menu bottom offset-y v-model="notifMenu" :nudge-width="250">
         <template v-slot:activator="{ on }">
           <v-btn text icon large color="grey" v-on="on"><v-badge overlap :value="!!notifNum" color="primary" class="mx-2" right><template v-slot:badge><span>{{ notifNum }}</span></template><v-icon color="grey">mdi-bell</v-icon></v-badge></v-btn>
         </template>
         <v-list class="grey lighten-5 pa-0">
            <template v-for="(item, i) in notifs">
-            <v-list-item :key="i" avatar @click="toUserProfile(item.id_from)">
+            <v-list-item :key="i" @click="toUserProfile(item.id_from)">
               <v-list-item-avatar>
                 <img :src="getFullPath(item.profile_image)">
               </v-list-item-avatar>
@@ -24,10 +24,10 @@
                   <strong class="notif_username">{{ item.username }}</strong>
                   <span>{{ getNotifMsg(item) }}</span>
                 </v-list-item-title>
-                <v-list-item-sub-title>
+                <v-list-item-subtitle>
                   <v-icon small color="blue lighten-2" class="mr-2">{{ getNotifIcon(item.type) }}</v-icon>
                   <span class="notif_date">{{ formatNotifDate(item) }}</span>
-                </v-list-item-sub-title>
+                </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </template>
@@ -49,7 +49,7 @@
         </template>
         <v-list class="grey lighten-5 pa-0 message_list">
           <template v-for="(item, i) in menuConvos">
-            <v-list-item :key="i" avatar @click="toUserChat(item)">
+            <v-list-item :key="i" @click="toUserChat(item)">
               <v-list-item-avatar>
                 <img :src="getFullPath(item.profile_image)">
               </v-list-item-avatar>
@@ -60,10 +60,10 @@
                     <span class="ml-auto chat_time">{{ formatNotifDate(item) }}</span>
                   </v-layout>
                 </v-list-item-title>
-                <v-list-item-sub-title>
+                <v-list-item-subtitle>
                   <span v-if="item.message_from == user.id" class="notif_date">You: </span>
                   <span class="notif_date text-truncate">{{ item.message }}</span>
-                </v-list-item-sub-title>
+                </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </template>
@@ -218,7 +218,7 @@ export default {
         const url = `${process.env.URL}/api/notif/update`
         const headers = { 'x-auth-token': this.user.token }
         // eslint-disable-next-line
-        const res = await this.$http.get(url, { headers })
+        const res = await this.$http.post(url, { headers })
         this.seenNotif()
       }
     },

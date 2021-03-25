@@ -9,9 +9,9 @@ const insertNotifVis = (user_id, id) => {
 
 // Inset notif (variable type)
 
-const insertNotif = (type, users) => {
+const insertNotif = (type, user_id, id) => {
 	let request = `INSERT INTO notifications (type, id_from, id_to) VALUES (?, ?, ?)`
-	return db.query(request, [type, ...users])
+	return db.query(request, [type, id, user_id])
 }
 
 // Delete notificaton 

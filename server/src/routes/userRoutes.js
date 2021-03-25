@@ -19,8 +19,8 @@ routes.post('/updateprofile', authCheck, userProfile.updateProfile)
 routes.post('/changeemail', authCheck, userProfile.changeEmail)
 routes.post('/changepassword', authCheck, userProfile.changePassword)
 
-routes.get('/show', authCheck, browsing.showUsers)
-routes.get('/show/:id', authCheck, browsing.showUserById)
+// routes.get('/show', authCheck, browsing.showUsers)
+// routes.get('/show/:id', authCheck, browsing.showUserById)
 
 routes.post('/show', authCheck, browsing.showUsers)
 routes.get('/show/:id', authCheck, browsing.showUserById)

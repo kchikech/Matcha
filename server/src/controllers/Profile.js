@@ -57,7 +57,7 @@ const updateProfile = async (req, res) => {
 					birthdate: req.body.birthdate,
 					biography: req.body.biography,
 					tags: req.body.tags,
-					adress: req.body.adress,
+					address: req.body.address,
 					city: req.body.city,
 					country: req.body.country,
 					postal_code: req.body.postal_code,

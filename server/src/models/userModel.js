@@ -1,5 +1,4 @@
 const db = require('../utility/database')
-const { blacklisted } = require('../controllers/Profile')
 
 // add user
 

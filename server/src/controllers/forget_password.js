@@ -63,8 +63,10 @@ const recover_password = async (req, res) => {
 /// Key check 
 
 const check_key = async (req, res) => {
-	if (!req.user.id) return res.json({ msg: 'Not logged in' })
-	if (!req.body.key) return res.json({ msg: 'Invalid request' })
+	if (!req.user.id) 
+		return res.json({ msg: 'Not logged in' })
+	if (!req.body.key) 
+		return res.json({ msg: 'Invalid request' })
 	try {
 		const key = req.body.key
 		await userModel.getRkey(key, (result) => {

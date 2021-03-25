@@ -36,6 +36,7 @@ const login = async (req, res) => {
 				delete user.password
 				delete user.verified
 				delete user.tokenExpiration
+				user.images = await userModel.getImagesByUid(user.id)
 				userModel.getUserById(user.id, async () => {
 					const payload = { id: user.id }
 					user.token = await sign(payload, process.env.SECRET, tokenExp)

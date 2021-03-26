@@ -47,9 +47,9 @@ export const auth = {
       }
     },
     logout: ({ commit }, id) => {
-      localStorage.clear()
+      localStorage.removeItem('token')
       commit('logout')
-      new Vue().$socket.emit('logout', id)
+      // new Vue().$socket.emit('logout', id)
     }
   }
 }

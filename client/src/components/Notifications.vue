@@ -29,7 +29,7 @@
     </v-timeline-item>
   </v-timeline>
   <v-flex xs6 offset-xs3>
-    <v-btn v-if="moreToLoad" large color="primary" flat round class="my-4" @click="increaseLimit">Load More</v-btn>
+    <v-btn v-if="moreToLoad" large color="primary" text rounded class="my-4" @click="increaseLimit">Load More</v-btn>
   </v-flex>
 </v-container>
 </template>

@@ -118,7 +118,6 @@ export const user = {
         if (Array.isArray(res.body)) {
           blocked = res.body.filter(cur => cur.blocker === id).map(cur => cur.blocked)
           blockedBy = res.body.filter(cur => cur.blocked === id).map(cur => cur.blocker)
-          console.log(blockedBy)
         }
         commit('syncBlocked', { blocked, blockedBy })
         if (blocked.length) dispatch('syncBlacklist', blocked)

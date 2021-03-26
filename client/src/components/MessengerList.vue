@@ -1,31 +1,31 @@
 <template>
 <v-list subheader class="grey lighten-5">
   <v-subheader class="hidden-sm-and-down">Recent chat</v-subheader>
-  <v-list-tile v-for="convo in convos" :key="convo.id_conversation" avatar @click="syncConvo(convo)">
+  <v-list-item v-for="convo in convos" :key="convo.id_conversation" @click="syncConvo(convo)">
     <v-layout justify-center align-center>
       <v-badge :value="!!unRead(convo)" overlap color="primary" class="mx-2" left>
         <template v-slot:badge>
           <span>{{ unRead(convo) }}</span>
         </template>
-        <v-list-tile-avatar class="pl-1">
+        <v-list-item-avatar class="pl-1">
           <img :src="getFullPath(convo.profile_image)">
-        </v-list-tile-avatar>
+        </v-list-item-avatar>
       </v-badge>
-      <v-list-tile-content class="hidden-sm-and-down">
-        <v-list-tile-title>{{ convo.username }}</v-list-tile-title>
-      </v-list-tile-content>
-      <v-list-tile-action class="hidden-sm-and-down">
+      <v-list-item-content class="hidden-sm-and-down">
+        <v-list-item-title>{{ convo.username }}</v-list-item-title>
+      </v-list-item-content>
+      <v-list-item-action class="hidden-sm-and-down">
         <v-layout justify-center align-center>
-          <v-icon v-if="notTyping(convo)" small :color="convo.status ? 'green' : 'grey'">fiber_manual_record</v-icon>
+          <v-icon v-if="notTyping(convo)" small :color="convo.status ? 'green' : 'grey'">mdi-circle</v-icon>
           <div v-else class="typing">
             <div class="typing_point"></div>
             <div class="typing_point"></div>
             <div class="typing_point"></div>
           </div>
         </v-layout>
-      </v-list-tile-action>
+      </v-list-item-action>
     </v-layout>
-  </v-list-tile>
+  </v-list-item>
   <p v-if="convos.length == 0">No conversations</p>
 </v-list>
 </template>

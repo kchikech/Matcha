@@ -4,7 +4,7 @@
   <v-flex v-for="(msg, i) in messages" :key="i + key">
     <h3 class="date_spacer subheading mb-2 mt-4" v-if="newConvo(msg, i)">{{ formatTime(msg.created_at) }}</h3>
     <v-layout :class="layoutClass(msg, i)" align-start>
-      <v-tooltip lazy z-index="2" left>
+      <v-tooltip z-index="2" left>
         <template v-slot:activator="{ on }">
           <router-link :to="`/user/${msg.id_from}`" v-if="showAvatar(msg, i)" :class="avatarClass(msg, i)">
             <v-avatar size="40">
@@ -18,7 +18,7 @@
       <v-avatar size="20" v-if="seen(msg, i)" class="mt-2">
         <img :src="getFullPath(imageConvo)" :alt="usernameConvo">
       </v-avatar>
-      <v-tooltip lazy z-index="2" :left="msg.id_from === user.id" :right="msg.id_from != user.id">
+      <v-tooltip z-index="2" :left="msg.id_from === user.id" :right="msg.id_from != user.id">
         <template v-slot:activator="{ on }">
           <div :class="bubbleClass(msg)" v-on="on">{{msg.message}}</div>
         </template>

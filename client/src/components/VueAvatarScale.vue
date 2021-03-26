@@ -1,8 +1,8 @@
 <template>
 <v-slider
   v-model="scale"
-  append-icon="zoom_in"
-  prepend-icon="zoom_out"
+  append-icon="mdi-magnify-plus"
+  prepend-icon="mdi-magnify-minus"
   @click:append="zoomIn"
   @click:prepend="zoomOut"
   :min="min"

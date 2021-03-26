@@ -194,7 +194,6 @@ export default {
     //   return this.typingSec.convos ? this.typingSec.convos.length : false
     // },
     image () {
-      console.log(this.profileImage)
       return this.getFullPath(this.profileImage)
     },
     notifs () {
@@ -238,16 +237,18 @@ export default {
       in: 'login',
       out: 'logout',
       syncConvo: 'syncConvo',
-      seenNotif: 'seenNotif'
-      // typingSecClr: 'typingSecClr'
+      seenNotif: 'seenNotif',
+      typingSecClr: 'typingSecClr'
     }),
     toUserProfile (id) {
       this.$router.push(`/user/${id}`)
     },
-    // toUserChat (convo) {
-    //   this.syncConvo(convo)
-    //   this.$router.push('/chat')
-    // },
+    toUserChat (convo) {
+      this.syncConvo(convo)
+      // eslint-disable-next-line
+      this.$router.push('/chat').catch(err => {
+      })
+    },
     async logout () {
       try {
         const url = `${process.env.URL}/api/auth/logout`

@@ -1,8 +1,8 @@
 <template>
 <v-snackbar v-model="data.state" :color="data.color" :timeout="4000" top right>
 {{ data.text }}
-  <v-btn dark text @click="data.state = false">
-    <v-icon>close</v-icon>
+  <v-btn text @click="data.state = false">
+    <v-icon>mdi-close</v-icon>
   </v-btn>
 </v-snackbar>
 </template>

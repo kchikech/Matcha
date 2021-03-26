@@ -24,7 +24,15 @@ Vue.use(new VueSocketIO({
     mutationPrefix: 'SOCKET_'
   }
 }))
-
+// eslint-disable-next-line
+String.prototype.escapeHtml = function () {
+  return this
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+}
 /* eslint-disable no-new */
 new Vue({
   router,

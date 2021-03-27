@@ -27,6 +27,7 @@ app.use('/uploads', express.static(`${path.dirname(__dirname)}/uploads`))
 
 // routes 
 
+app.use(express.static(`${path.dirname(path.dirname(__dirname))}/client/dist`)      )
 app.use('/api/users/', require('./routes/userRoutes'))
 app.use('/api/auth/', require('./routes/authRoutes'))
 app.use('/api/browse/', require('./routes/browsingRoutes'))
@@ -34,12 +35,13 @@ app.use('/api/chat/', require('./routes/chatRoutes'))
 app.use('/api/notif/', require('./routes/notifRoutes'))
 app.use('/api/matching/', require('./routes/matchingRoutes'))
 
-
+app.get(/.*/, (req, res) => res.sendFile(path.join(`${path.dirname(path.dirname(__dirname))}/client/dist`, 'index.html')))
 
 const server = http.createServer(app)
 const io = socketIo(server, { pingInterval: 10, pingTimeout: 4000 })
 
 let users = {}
+
 
 io.on('connection', socket => {
 	socket.on('chat', data => {

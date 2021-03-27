@@ -34,10 +34,6 @@ const register = async (req, res) => {
 		return res.json({ msg: 'Username is invalid' })
 	if (!validator(req.body.password, 'password'))
 		return res.json({ msg: 'Password is invalid' })
-	if (req.body.passwordConfirm != req.body.password)
-		return res.json({ msg: 'Passwords don\'t match ' })
-	if (!validator(req.body.passwordConfirm, 'password'))
-		return res.json({ msg: 'Password confirmation is invalid' })
 
 	try {
 		const user = {
@@ -52,7 +48,7 @@ const register = async (req, res) => {
 			if (results.length === 0) {
 				userModel.addUser(user, (result) => {
 					if (result.affectedRows) {
-						mailer.sendMail(user.email, user.vkey, 'verify')
+						mailer.sendMail(user.email, user.vkey, 'users/verify')
 						return res.json({ ok: true, status: 'You have been successfully registered, please verify your email' })
 					}
 				})

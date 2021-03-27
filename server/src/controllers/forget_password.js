@@ -29,7 +29,7 @@ const forget_password = async (req, res) => {
 			if (!results.affectedRows)
 				return res.json({ msg: 'Email not found' })
 			else {
-				mailer.sendMail(req.body.email, key, 'recover')
+				mailer.sendMail(req.body.email, key, 'auth/recover')
 				return res.json({ ok: true })
 			}
 		})
@@ -42,17 +42,17 @@ const forget_password = async (req, res) => {
 
 const recover_password = async (req, res) => {
 	if (!req.params.key)
-		return res.json({ msg: 'Ivalid request' })
+		return res.json({ msg: 'Invalid request' })
 	try {
 		const rkey = req.params.key
 		userModel.getRkey(rkey, async (result) => {
 			if (!result.length)
 				return res.redirect('/404')
 			else {
-				const payload = { id: user.id }
+				const payload = { id: result[0].id }
 				const token = await sign(payload, process.env.SECRET, tokenExp)
-				res.render('recover', { token, rkey })
-				// res.json({msg: 'ok'})
+				return res.status(200).render('recover', { token, rkey })
+				// res.json({ msg: 'ok' })
 			}
 		})
 	} catch (err) {
@@ -63,21 +63,34 @@ const recover_password = async (req, res) => {
 /// Key check 
 
 const check_key = async (req, res) => {
-	if (!req.user.id) 
+	if (!req.user.id)
 		return res.json({ msg: 'Not logged in' })
-	if (!req.body.key) 
+	if (!req.body.key)
 		return res.json({ msg: 'Invalid request' })
+	if (!validator(req.body.password, 'password'))
+		return res.json({ msg: 'Password is invalid' })
 	try {
+		const hashed = await bcrypt.hash(req.body.password, 10)
+		let user = {
+			id: req.user.id,
+			rkey: req.body.key,
+			password: hashed,
+		}
 		const key = req.body.key
-		await userModel.getRkey(key, (result) => {
+		await userModel.getRkey(key, async (result) => {
 			if (!result.length)
 				return res.json({ msg: 'Invalid key' })
-			res.json({ ok: true })
+			await userModel.changeFrogottenPassword(user, (result) => {
+				if (!result.affectedRows)
+					return res.json({ msg: 'Oups something went wrong' })
+				res.json({ ok: true })
+			})
 		})
 	} catch (err) {
 		return res.json({ msg: 'Fatal error', err })
 	}
 }
+
 
 /// Key destroy 
 
@@ -95,36 +108,10 @@ const destroy_key = async (req, res) => {
 	}
 }
 
-// Change password 
-
-const change_password = async (req, res) => {
-	if (!req.user.id)
-		return res.json({ msg: 'Not logged in' })
-	if (!req.body.key)
-		return res.json({ msg: 'Invalid key' })
-	if (!validator(req.body.password, 'password'))
-		return res.json({ msg: 'Password is invalid' })
-	try {
-		const hashed = await bcrypt.hash(req.body.password, 10)
-		let user = {
-			id: req.user.id,
-			rkey: req.body.key,
-			password: hashed,
-		}
-		await userModel.changeFrogottenPassword(user, (result) => {
-			if (!result.affectedRows)
-				return res.json({ msg: 'Oups something went wrong' })
-			res.json({ ok: true })
-		})
-	} catch (err) {
-		return res.json({ msg: 'Fatal error', err })
-	}
-}
 
 module.exports = {
 	forget_password,
 	recover_password,
 	check_key,
 	destroy_key,
-	change_password
 }

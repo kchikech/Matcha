@@ -5,7 +5,8 @@
 	"main": "app.js",
 	"scripts": {
 		"start": "node ./src/app.js",
-		"dev": "git pull && nodemon app.js"
+		"dev": "git pull && nodemon app.js",
+		"build": "cd ../client/ && npm run build"
 	},
 	"author": "kchikech",
 	"license": "ISC",

@@ -32,8 +32,12 @@ const updateProfile = async (req, res) => {
 		return res.json({ msg: 'Gender is invalid' })
 	if (!validator(req.body.looking, 'looking'))
 		return res.json({ msg: 'Looking is invalid' })
+	if (!validator(req?.body?.phone, 'phone'))
+		return res.json({ msg: 'Phone number is invalid' })
 	if (req.body.birthdate && new Date(req.body.birthdate) >= new Date().getTime())
 		return res.json({ msg: 'Birthdate is invalid' })
+	if (req?.body?.biography?.length > 500)
+		return res.json({ msg: 'bio is too large' })
 	let Tags
 	if (req.body.tags)
 		Tags = req.body.tags.split(',')
@@ -185,7 +189,6 @@ const uploadImages = async (req, res) => {
 			}
 		})
 	} catch (err) {
-		console.log(err)
 		return res.json({ msg: 'Fatal error', err })
 	}
 }
@@ -239,17 +242,14 @@ const deleteImage = async (req, res) => {
 					}
 				}
 				await userModel.delImage(req.body.id, req.user.id, async (result) => {
-					if (!req.body.profile)
-					{	
-						console.log(req.body.profile)
-						userModel.setImages(req.user.id)}
+					if (!req.body.profile) {
+						userModel.setImages(req.user.id)
+					}
 					if (result.affectedRows)
 						return res.json({ ok: true })
 				})
 			}
 			else {
-				console.log(req.body.id)
-				console.log(req.user.id)
 				res.json({ msg: 'Oups something went wrong' })
 			}
 		})

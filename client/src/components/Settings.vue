@@ -65,14 +65,15 @@ import Alert from './Alert'
 //  import moment from 'moment'
 import loader from './loader'
 import utility from '../utility.js'
-import ProfileForm from './ProfileForm'
-import ProfileTabs from './ProfileTabs'
-import ProfileBadge from './ProfileBadge'
 import ProfileEditor from './ProfileEditor'
+import ProfileBadge from './ProfileBadge'
+import ProfileTabs from './ProfileTabs'
+import ProfileForm from './ProfileForm'
+import ProfileSettings from './ProfileSettings'
 import ProfileGallery from './ProfileGallery'
 import ProfileHistory from './ProfileHistory'
 import { mapGetters, mapActions } from 'vuex'
-import ProfileSettings from './ProfileSettings'
+
 export default {
   name: 'Settings',
   components: {
@@ -237,3 +238,9 @@ export default {
   }
 }
 </script>
+<style scoped>
+.container {
+    width: 100%;
+    padding: 4em;
+}
+</style>

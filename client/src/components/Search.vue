@@ -315,7 +315,7 @@ export default {
 }
 
 .toggle_btn {
-  flex: 1 1;
+  flex: 1 1 !important;
   height: 3.33rem;
 }
 

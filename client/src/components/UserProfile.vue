@@ -244,7 +244,7 @@ export default {
       return this.online.includes(this.user.id)
     },
     coverPhoto () {
-      const cover = 'https://images.pexels.com/photos/96422/pexels-photo-96422.jpeg'
+      const cover = 'https://images.unsplash.com/photo-1474552226712-ac0f0961a954?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=3151&q=80'
       if (!this.user || !this.user.images) return this.getFullPath(cover)
       const image = this.user.images.find(cur => cur.cover)
       return this.getFullPath(image ? image.name : cover)
@@ -417,7 +417,10 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.container { 
+  padding: 4em;
+}
 .profile-status_icon {
   align-self: flex-start;
   margin-top: 1.5rem;

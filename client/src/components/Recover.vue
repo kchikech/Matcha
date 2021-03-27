@@ -60,10 +60,11 @@ export default {
       const key = localStorage.getItem('key')
       const headers = { 'x-auth-token': token }
       const url = `${process.env.URL}/api/auth/recover`
-      const res = await this.$http.post(url, { key }, { headers })
+      const res = await this.$http.get(url, { key }, { headers })
       this.loading = false
-      if (res.body.ok) {
-        this.$router.replace(`/recover`)
+      if (res.ok) {
+        this.$router.replace(`/recover`).catch(err => {
+        })
       } else {
         this.$router.push('/404')
       }

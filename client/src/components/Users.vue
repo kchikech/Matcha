@@ -67,7 +67,7 @@ export default {
 
 .header {
   height: calc(100vh - 64px);
-  background-image: url(https://images.hdqwalls.com/download/sweet-moment-wa-1366x768.jpg);
+  background-image: url(https://images.unsplash.com/photo-1451444635319-e5e247fbb88d?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=3150&q=80);
   background-position: center;
   background-size: cover;
 }
@@ -83,7 +83,7 @@ export default {
 }
 
 .home_toggle_btn {
-  flex: 1 1 50%;
+  flex: 1 1 50% !important;
 }
 
 .home_loaction_input > .v-input__control > .v-input__slot,

@@ -187,12 +187,12 @@ export default {
       'notif',
       'status',
       'convos',
-      // 'typingSec',
+      'typingSec',
       'profileImage'
     ]),
-    // typingConvos () {
-    //   return this.typingSec.convos ? this.typingSec.convos.length : false
-    // },
+    typingConvos () {
+      return this.typingSec.convos ? this.typingSec.convos.length : false
+    },
     image () {
       return this.getFullPath(this.profileImage)
     },

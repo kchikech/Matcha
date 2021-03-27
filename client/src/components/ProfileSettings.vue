@@ -279,7 +279,6 @@ export default {
     },
     async unBlock (banned) {
       const { id, username } = banned
-      console.log(banned)
       const url = `${process.env.URL}/api/users/unblock`
       const headers = { 'x-auth-token': this.user.token }
       const result = await this.$http.post(url, { id }, { headers })
@@ -295,11 +294,6 @@ export default {
         this.showAlert('red', result.body.msg, this)
       }
     }
-    // changeTheme (color) {
-    //   let root = document.documentElement
-    //   this.$vuetify.theme.primary = color
-    //   root.style.setProperty('--color-primary', color)
-    // }
   }
 }
 </script>

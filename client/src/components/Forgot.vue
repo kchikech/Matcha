@@ -12,6 +12,7 @@
 
 <script>
 import Alert from './Alert'
+import utility from '../utility'
 
 export default {
   name: 'Forgot',
@@ -26,8 +27,8 @@ export default {
     }
   }),
   methods: {
+    ...utility,
     async recover (e) {
-      e.preventDefault()
       const email = this.email
       if (email && email.length && /.+@.+/.test(email)) {
         const url = `${process.env.URL}/api/auth/forget_password`

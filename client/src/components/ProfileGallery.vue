@@ -4,7 +4,7 @@
   <v-layout row wrap class="mt-4">
     <v-flex v-for="image in images" :key="image.id" xs4 grow class="img_container">
       <v-btn v-if="user.id == image.user_id" color="red" dark small icon @click="deleteImg(image)" class="del_img">
-        <v-icon>close</v-icon>
+        <v-icon>mdi-close</v-icon>
       </v-btn>
       <img :src="profileImage(image.name)" class="image" width="100%" height="100%">
     </v-flex>
@@ -66,7 +66,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .flex.xs4.grow {
   max-width: 100% !important;
 }
@@ -77,7 +77,7 @@ export default {
 
 .del_img,
 .del_img:hover {
-  position: absolute;
+  position: absolute !important;
   top: 0;
   right: 0;
   transform: translate(25%, -25%) scale(.8);

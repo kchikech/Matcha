@@ -49,7 +49,7 @@
         <vue-tags-input :max-tags="20" :maxlength="25" :autocomplete-items="formatedTags" :add-on-key="tagEsc" :disabled="!isEditing" v-model="tag" :tags="tags" @tags-changed="newTags => tags = newTags"/>
       </v-flex>
       <v-flex xs12>
-        <v-textarea :disabled="!isEditing" color="primary" label="Bio" v-model="user.biography"/>
+        <v-textarea :disabled="!isEditing" :counter="500" color="primary" label="Bio" v-model="user.biography"/>
       </v-flex>
       <v-flex xs12 text-xs-right>
         <v-btn :disabled="!isEditing" class="mx-0 font-weight-light" color="primary" large dark @click.prevent="updateUser">Save</v-btn>
@@ -124,14 +124,15 @@ export default {
 }
 </script>
 
-<style>
-.edit, .edit:hover, .edit:focus {
+<style scoped>
+/* .edit, .edit:hover, .edit:focus {
   position: absolute;
-}
+} */
 
 .edit {
   right: 0;
   transform: translate(-50%, 60%);
+  position: absolute !important;
 }
 
 .vue-tags-input {
